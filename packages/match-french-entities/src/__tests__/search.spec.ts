@@ -29,6 +29,19 @@ const tests = [
   { input: "villeneuve saint georges", expected: "ville" },
   { input: "saint-clement", expected: "ville" },
   { input: "paris", expected: "ville" },
+  { input: "mlle", expected: "titre" },
+  { input: "Mr", expected: "titre" },
+  { input: "10/10/2010", expected: "date" },
+  { input: "Homme", expected: "sexe" },
+  { input: "75012", expected: "cp" },
+  { input: "89100", expected: "cp" },
+  { input: "2a", expected: "cp" },
+  { input: "test@test.com", expected: "email" },
+  { input: "42.765765,4.876875", expected: "geo" },
+  { input: "+33 01 4243 43 22", expected: "tel" },
+  { input: "+33 1 4243 43 22", expected: "tel" },
+  { input: "0142434322", expected: "tel" },
+  { input: "1.1.1.1", expected: "ip" },
 ];
 
 tests.forEach((t) => {

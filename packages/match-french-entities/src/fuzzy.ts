@@ -1,10 +1,4 @@
 import {
-  token_sort_ratio,
-  distance,
-  token_set_ratio,
-  token_similarity_sort_ratio,
-  partial_token_sort_ratio,
-  WRatio,
   process_and_sort,
   full_process,
   ratio,
@@ -51,7 +45,7 @@ type CorpusData = CorpusDataEntry[];
 type FuzzySearchResult = {
   type: string;
   score: number;
-  adjustedScore: number;
+  initialScore: number;
 };
 
 type FuzzySearchResults = FuzzySearchResult[];
@@ -74,18 +68,16 @@ export const search = async (needle: string): Promise<FuzzySearchResults> => {
     ])
   )) as unknown as Results;
 
-  const sortedResults = results
+  return results
     .map((result) => ({
       type: result[0],
-      score: result[1][0].score,
-      adjustedScore:
+      initialScore: result[1][0].score,
+      score:
         // this formula depends on input data.
         result[1][0].score *
         Math.min(0.05, Math.max(0.005, result[1][0].choice.freq / 10)),
     }))
     .sort((res1: FuzzySearchResult, res2: FuzzySearchResult) => {
-      return res2.adjustedScore - res1.adjustedScore;
+      return res2.score - res1.score;
     });
-
-  return sortedResults;
 };

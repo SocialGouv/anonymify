@@ -20,7 +20,8 @@
   "dependencies": {
     "csv": "^6.0.4",
     "fuzzball": "^2.1.2",
-    "tsconfig": "^7.0.0"
+    "tsconfig": "^7.0.0",
+    "yaml": "^1.10.2"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",

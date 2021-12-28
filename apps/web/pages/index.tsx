@@ -33,7 +33,7 @@ export default function Web() {
         fontFamily: "Trebuchet Ms, Verdana",
       }}
     >
-      <h1>Détection d&apos;entités</h1>
+      <h1>Détection d&apos;entités FR</h1>
       <input
         defaultValue={query}
         style={{ fontSize: 42, textAlign: "center", width: 500 }}
@@ -44,9 +44,9 @@ export default function Web() {
       <br />
       {predictions &&
         predictions.map((prediction, idx) => (
-          <div style={{ fontSize: "1.4em" }} key={prediction.score}>
+          <div style={{ fontSize: "1.4em" }} key={prediction.type}>
             {idx === 0 ? <b>{prediction.type}</b> : prediction.type} (
-            {prediction.adjustedScore})
+            {prediction.score})
           </div>
         ))}
     </div>

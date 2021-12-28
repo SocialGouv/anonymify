@@ -1,0 +1,54 @@
+{
+  "matchers": {
+    "profession": {
+      "corpus": "professions.json"
+    },
+    "prenom": {
+      "corpus": "prenoms.json"
+    },
+    "nom": {
+      "corpus": "noms.json"
+    },
+    "ville": {
+      "corpus": "villes.json"
+    },
+    "geo": {
+      "regexps": ["^\\d\\d?\\.\\d+,\\d\\d?\\.\\d+$"]
+    },
+    "email": {
+      "regexps": ["^[^@/'\";]+@[^@]+\\.[^@]+$"]
+    },
+    "cp": {
+      "regexps": ["^\\d{5}$", "^2a$", "^2b$"]
+    },
+    "tel": {
+      "regexps": ["^(\\+\\d+\\s?)?0?\\d[:/.\\s]?(\\d{2}[:/.\\s]?){4}$"]
+    },
+    "ip": {
+      "regexps": ["^\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?"]
+    },
+    "date": {
+      "regexps": [
+        "^\\d\\d?/\\d\\d?/\\d\\d(\\d\\d)?$",
+        "^\\d{4}[/-]\\d\\d?[/-]\\d\\d?$"
+      ]
+    },
+    "titre": {
+      "items": [
+        "M",
+        "M.",
+        "Mr",
+        "Mr.",
+        "Monsieur",
+        "Madame",
+        "Mme",
+        "Me",
+        "Mme.",
+        "Mlle."
+      ]
+    },
+    "sexe": {
+      "items": ["Homme", "H", "Femme", "F"]
+    }
+  }
+}
