@@ -39,7 +39,6 @@ export default function Web() {
   const [queryValue] = useDebounce(query, 300);
 
   const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    console.log(e);
     if (!e.metaKey) {
       const newQuery = e.currentTarget.value.trim();
       if (newQuery !== query) {
@@ -52,7 +51,6 @@ export default function Web() {
   useEffect(() => {
     if (queryValue) {
       search(queryValue).then((predictions) => {
-        console.log("useEffect", queryValue, predictions);
         setPredictions(predictions);
       });
     }
@@ -62,23 +60,23 @@ export default function Web() {
     <div
       style={{
         textAlign: "center",
-        fontSize: "2em",
         fontFamily: "Trebuchet Ms, Verdana",
       }}
     >
       <h1>Détection d&apos;entités</h1>
       <input
         defaultValue={query}
-        style={{ fontSize: 24, textAlign: "center", width: 500 }}
+        style={{ fontSize: 42, textAlign: "center", width: 500 }}
         onKeyUp={onKeyUp}
         onKeyDown={onKeyUp}
       />
       <br />
       <br />
       {predictions &&
-        predictions.map((prediction) => (
-          <div style={{}} key={prediction.score}>
-            {prediction.type} ({prediction.adjustedScore})
+        predictions.map((prediction, idx) => (
+          <div style={{ fontSize: "1.4em" }} key={prediction.score}>
+            {idx === 0 ? <b>{prediction.type}</b> : prediction.type} (
+            {prediction.adjustedScore})
           </div>
         ))}
     </div>
