@@ -3,36 +3,6 @@ import { KeyboardEvent, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useEffect } from "react";
 
-const searches = [
-  "Julien",
-  "Martin",
-  "Céline",
-  "Celine",
-  "CELINE",
-  "mont de marsan",
-  "momo",
-  "Larbi",
-  "Leila",
-  "Gus",
-  "Henri de la tour",
-  "de la verriere",
-  "Emmanuel",
-  "Catherine",
-  "CATHERINE",
-  "Pinard",
-  "Pinardo",
-  "bouquillon",
-  "saint etienne",
-  "sens",
-  "pedro",
-  "maalik",
-  "anderson",
-  "Rochefourchat",
-  "Ornes",
-  "villeneuve saint georges",
-  "saint-clement",
-];
-
 export default function Web() {
   const [predictions, setPredictions] = useState(null);
   const [query, setQuery] = useState("Ville franche / saone");
