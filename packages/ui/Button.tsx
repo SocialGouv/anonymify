@@ -1,4 +1,6 @@
 import * as React from "react";
-export const Button = () => {
-  return <button>Boop</button>;
+import { MouseEventHandler } from "react";
+
+export const Button = ({ onClick }: { onClick: MouseEventHandler }) => {
+  return <button onClick={onClick}>Boop</button>;
 };

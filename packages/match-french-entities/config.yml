@@ -1,0 +1,54 @@
+matchers:
+  profession:
+    corpus:
+      url: "professions.json"
+  prenom:
+    corpus:
+      url: "prenoms.json"
+  nom:
+    corpus:
+      url: "noms.json"
+  ville:
+    corpus:
+      url: "villes.json"
+  geo:
+    regexps:
+      - "^\d\d?\./\d+,\d\d?\./\d+$" 
+  email:
+    regexps:
+      - "^[^@/'\";]+@[^@]+\.[^@]+$"
+  cp:
+    regexps:
+      - "^\d{5}$"
+      - "^2a$"
+      - "^2b$"
+  tel:
+    regexps:
+      - "^(\+\d+\s?)?(\d{2}[:/.\s]?){5}$"
+  ip:
+    regexps:
+      - "^\d\d?\d?\.\d\d?\d?\.\d\d?\d?\.\d\d?\d?"
+  date:
+    regexps:
+      - "^\d\d?/\d\d?/\d\d(\d\d)?$" # FR
+      - "^\d{4}[/-]\d\d?[/-]\d\d?$" # EN
+  titre:
+    corpus:
+      items: 
+        - M
+        - M.
+        - Mr
+        - Mr.
+        - Monsieur
+        - Madame
+        - Mme
+        - Me
+        - Mme.
+        - Mlle.
+  sexe:
+    corpus:
+      items:
+        - Homme
+        - H
+        - Femme
+        - F
