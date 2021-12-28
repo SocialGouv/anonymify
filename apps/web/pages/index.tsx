@@ -78,7 +78,7 @@ export default function Web() {
       {predictions &&
         predictions.map((prediction) => (
           <div style={{}} key={prediction.score}>
-            {prediction.type} ({prediction.score}%)
+            {prediction.type} ({prediction.adjustedScore})
           </div>
         ))}
     </div>

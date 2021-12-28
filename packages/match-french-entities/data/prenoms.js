@@ -18,9 +18,9 @@ const getRecords = () =>
           return reject(err);
         }
 
-        // only keep records with count>50
+        // only keep records with count>10
         const relevantRecords = records.filter(
-          ([_, count]) => parseFloat(count) > 50
+          ([_, count]) => parseFloat(count) > 10
         );
 
         const counts = relevantRecords
