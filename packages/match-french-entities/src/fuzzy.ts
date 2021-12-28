@@ -81,7 +81,7 @@ export const search = async (needle: string): Promise<FuzzySearchResults> => {
       adjustedScore:
         // this formula depends on input data.
         result[1][0].score *
-        Math.min(0.008, Math.max(0.005, result[1][0].choice.freq / 10)),
+        Math.min(0.05, Math.max(0.005, result[1][0].choice.freq / 10)),
     }))
     .sort((res1: FuzzySearchResult, res2: FuzzySearchResult) => {
       return res2.adjustedScore - res1.adjustedScore;

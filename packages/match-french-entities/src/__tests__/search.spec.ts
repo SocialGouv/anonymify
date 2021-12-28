@@ -28,6 +28,7 @@ const tests = [
   { input: "Ornes", expected: "ville" },
   { input: "villeneuve saint georges", expected: "ville" },
   { input: "saint-clement", expected: "ville" },
+  { input: "paris", expected: "ville" },
 ];
 
 tests.forEach((t) => {
