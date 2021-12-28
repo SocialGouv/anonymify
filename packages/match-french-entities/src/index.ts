@@ -37,6 +37,7 @@ const cleanStr = (str: string) =>
 const cleanArr = (arr: string[]) => arr.map((v) => cleanStr(v));
 
 export const search = async (needle: string): Promise<SearchResults> => {
+  if (!needle.trim().length) return [];
   const matches = Object.keys(config.matchers)
     // .filter(key)
     .map((key) => {
@@ -56,8 +57,20 @@ export const search = async (needle: string): Promise<SearchResults> => {
     })
     .filter(Boolean);
 
+  if (Number(needle.replace(/,/, "."))) {
+    matches.push({ type: "number", score: 100 });
+  }
+
+  if (needle.length > 50) {
+    matches.push({ type: "text", score: 100 });
+  }
+
   if (!matches.length) {
     matches.push(...(await fuzzySearch(needle)));
+  }
+
+  if (!matches.length && !Number(needle)) {
+    matches.push({ type: "text", score: 100 });
   }
 
   return matches as SearchResults;

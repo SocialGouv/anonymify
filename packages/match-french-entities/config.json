@@ -1,8 +1,5 @@
 {
   "matchers": {
-    "profession": {
-      "corpus": "professions.json"
-    },
     "prenom": {
       "corpus": "prenoms.json"
     },
@@ -21,11 +18,22 @@
     "cp": {
       "regexps": ["^\\d{5}$", "^2a$", "^2b$"]
     },
+    "siren": {
+      "regexps": ["^\\d{9}$"]
+    },
+    "siret": {
+      "regexps": ["^\\d{14}$"]
+    },
     "tel": {
       "regexps": ["^(\\+\\d+\\s?)?0?\\d[:/.\\s]?(\\d{2}[:/.\\s]?){4}$"]
     },
     "ip": {
       "regexps": ["^\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?"]
+    },
+    "adresse": {
+      "regexps": [
+        "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|impasse|place|avenue|av.?|rue|boulevard|bd.?|chemin)\\s.*$"
+      ]
     },
     "date": {
       "regexps": [

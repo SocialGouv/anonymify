@@ -31,6 +31,7 @@ const options = {
   limit: 1,
   useCollator: true,
   full_process: false,
+  cutoff: 75, // suppress low results
 } as FuzzballBaseOptions;
 
 type Result = [string, ResultRow];
@@ -69,13 +70,14 @@ export const search = async (needle: string): Promise<FuzzySearchResults> => {
   )) as unknown as Results;
 
   return results
+    .filter((result) => result[1].length)
     .map((result) => ({
       type: result[0],
       initialScore: result[1][0].score,
       score:
         // this formula depends on input data.
         result[1][0].score *
-        Math.min(0.05, Math.max(0.005, result[1][0].choice.freq / 10)),
+        Math.min(0.1, Math.max(0.005, result[1][0].choice.freq / 10)),
     }))
     .sort((res1: FuzzySearchResult, res2: FuzzySearchResult) => {
       return res2.score - res1.score;
