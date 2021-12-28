@@ -1,4 +1,4 @@
-import { search } from "../index";
+import { match } from "../index";
 
 const tests = [
   { input: "Julien", expected: "nom" },
@@ -61,7 +61,7 @@ const tests = [
 
 tests.forEach((t) => {
   test(`${t.input} should be "${t.expected}"`, async () => {
-    const results = await search(t.input);
+    const results = await match(t.input);
     expect(results[0].type).toEqual(t.expected);
   });
 });

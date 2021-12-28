@@ -1,11 +1,11 @@
 # anonymify
 
-Outils TypeScript pour l'anonymisation des données FR
+Outils TypeScript pour l'anonymisation des données en langue Française
 
-| package                        | descriptions                      |
-| ------------------------------ | --------------------------------- |
-| packages/match-french-entities | detection du type entité nommée   |
-| apps/demo-entities             | démo web de match-french-entities |
+| package                                                            | descriptions                      |
+| ------------------------------------------------------------------ | --------------------------------- |
+| [packages/match-french-entities](./packages/match-french-entities) | detection du type entité nommée   |
+| apps/demo-entities                                                 | démo web de match-french-entities |
 
 ### Build
 

@@ -36,7 +36,7 @@ const cleanStr = (str: string) =>
 
 const cleanArr = (arr: string[]) => arr.map((v) => cleanStr(v));
 
-export const search = async (needle: string): Promise<SearchResults> => {
+export const match = async (needle: string): Promise<SearchResults> => {
   if (!needle.trim().length) return [];
   const matches = Object.keys(config.matchers)
     // .filter(key)
