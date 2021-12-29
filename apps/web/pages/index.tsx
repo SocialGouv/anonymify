@@ -1,4 +1,4 @@
-import { search } from "@socialgouv/match-french-entities";
+import { match } from "@socialgouv/match-french-entities";
 import { KeyboardEvent, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useEffect } from "react";
@@ -20,7 +20,7 @@ export default function Web() {
 
   useEffect(() => {
     if (queryValue) {
-      search(queryValue).then((predictions) => {
+      match(queryValue).then((predictions) => {
         setPredictions(predictions);
       });
     }

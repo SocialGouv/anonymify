@@ -1,11 +1,13 @@
-# anonymify
+# @socialgouv/anonymify
 
 Outils TypeScript pour l'anonymisation des données en langue Française
 
-| package                                                            | descriptions                      |
-| ------------------------------------------------------------------ | --------------------------------- |
-| [packages/match-french-entities](./packages/match-french-entities) | detection du type entité nommée   |
-| apps/demo-entities                                                 | démo web de match-french-entities |
+## Packages
+
+| package                                                   | descriptions                       |
+| --------------------------------------------------------- | ---------------------------------- |
+| [match-french-entities](./packages/match-french-entities) | detection du type d'entité nommée  |
+| apps/demo-entities                                        | démo web de match-french-entit`ies |
 
 ### Build
 
