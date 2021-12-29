@@ -58,10 +58,14 @@ export const match = async (needle: string): Promise<SearchResults> => {
     .filter(Boolean);
 
   if (Number(needle.replace(/,/, "."))) {
-    matches.push({ type: "number", score: 100 });
+    if (needle.indexOf(".") > -1) {
+      matches.push({ type: "float", score: 100 });
+    } else {
+      matches.push({ type: "integer", score: 100 });
+    }
   }
 
-  if (needle.length > 50) {
+  if (needle.length > 30) {
     matches.push({ type: "text", score: 100 });
   }
 
