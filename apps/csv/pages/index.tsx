@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button, Container, Alert, Table } from "react-bootstrap";
+import { Button, Container, Alert, Table, Progress } from "react-bootstrap";
 
 import { sample } from "@socialgouv/csv-sample";
 
@@ -25,105 +25,148 @@ const dropzoneStyle = {
 };
 
 const uniq = (arr: any[]) => Array.from(new Set(arr));
+
 const ellipsify = (str: string, maxLength: 15) =>
   str && str.length > maxLength
     ? str.substring(0, maxLength) + "..."
     : str || "";
 
-const DropZone = () => {
-  const [status, setStatus] = useState(null);
+const CSVDropZone = () => {
+  const [progress, setProgress] = useState(null);
   const [records, setRecords] = useState(null);
   const [samples, setSamples] = useState(null);
-  const onDrop = useCallback((acceptedFiles) => {
-    setStatus(null);
+
+  const reset = () => {
     setRecords([]);
     setSamples([]);
-    acceptedFiles.forEach(async (file) => {
-      //const reader2 = await file.stream();
-      ``;
-      //sample(reader2).then(console.log).catch(console.log);
+  };
 
-      const reader = new FileReader();
-
-      //  console.log(fileContentStream);
-
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = async (e) => {
-        //@ts-expect-error
-        sample(new Buffer(e.target.result), {
-          onProgress: ({ status, msg, records }) => {
-            console.log({ status, msg, records });
-            setStatus(msg);
-            if (records) {
-              setRecords(records);
-            }
-          },
-        })
-          .then((samples) => {
-            console.log("samples", samples);
-            setSamples(samples);
-          })
-          .catch(console.log);
-      };
-      console.log(reader);
-
-      reader.readAsArrayBuffer(file);
+  const onDrop = useCallback((acceptedFiles) => {
+    reset();
+    setProgress({
+      status: "running",
+      msg: "Démarrage...",
     });
+
+    const firstCSV = acceptedFiles[0];
+    const reader = new FileReader();
+    reader.onabort = () => {
+      console.error("file reading was aborted");
+      setProgress({
+        status: "error",
+        msg: "Impossible de lire le CSV : aborted",
+      });
+      reset();
+    };
+    reader.onerror = (e) => {
+      console.error("file reading has failed", e);
+      setProgress({
+        status: "error",
+        msg: `Impossible de lire le CSV : error`,
+      });
+      reset();
+    };
+    reader.onload = async (e) => {
+      //@ts-expect-error
+      sample(Buffer.from(e.target.result), {
+        onProgress: ({ status, msg, records }) => {
+          console.log({ status, msg, records });
+          setProgress({ status, msg });
+          if (records) {
+            setRecords(records);
+          }
+        },
+      })
+        .then((samples) => {
+          console.log("samples", samples);
+          setSamples(samples);
+        })
+        .catch(console.log);
+    };
+    reader.readAsArrayBuffer(firstCSV);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: "text/csv",
   });
 
-  const columns = records && records.length && Object.keys(records[0]);
-
   return (
-    <div {...getRootProps()} style={dropzoneStyle}>
-      <input {...getInputProps()} />
-      {status ? status : <p>Glissez un fichier CSV ici</p>}
-      {(records && records.length && (
-        <Table striped bordered hover style={{ fontSize: "0.8em" }}>
-          <thead>
-            <tr>
-              <th>Colonne</th>
-              <th>Type détecté</th>
-              <th>Anonymiser</th>
-              <th>Exemples</th>
-            </tr>
-          </thead>
-          <tbody>
-            {columns.map((key) => {
-              const columnType =
-                samples.length && samples.find((s) => s.name === key)?.type;
-              const values =
-                columnType === "empty"
-                  ? ""
-                  : columnType === "fixed"
-                  ? records[0][key]
-                  : uniq(
-                      records
-                        .map((rec) => ellipsify(rec[key], 15))
-                        .filter((x) => !!x)
-                    )
-                      .slice(0, 3)
-                      .join(", ");
-              return (
-                <tr key={key}>
-                  <td>{key}</td>
-                  <td>{columnType || "-"}</td>
-                  <td>
-                    <input type="checkbox" checked={columnType !== "empty"} />
-                  </td>
-                  <td>{values}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      )) ||
-        null}
+    <div>
+      {progress === null || progress.status === "error" ? (
+        <div>
+          {progress && progress.status === "error" && (
+            <Alert variant="danger">{progress.msg || progress.status}</Alert>
+          )}
+          <div {...getRootProps()} style={dropzoneStyle}>
+            <input {...getInputProps()} />
+            {<p>Glissez un fichier CSV ici</p>}
+          </div>
+        </div>
+      ) : (
+        <div>
+          {progress && (
+            <Alert
+              variant={
+                progress && progress.status === "finished"
+                  ? "success"
+                  : "warning"
+              }
+            >
+              {progress.msg || progress.status}
+            </Alert>
+          )}
+          {(records && records.length && (
+            <CsvTable records={records} samples={samples} />
+          )) ||
+            null}
+        </div>
+      )}
     </div>
+  );
+};
+
+const getColumnSamplesValues = ({ records, key, columnType }) => {
+  const values =
+    columnType === "empty"
+      ? ""
+      : columnType === "fixed"
+      ? records[0][key]
+      : uniq(records.map((rec) => ellipsify(rec[key], 15)).filter((x) => !!x))
+          .slice(0, 3)
+          .join(", ");
+  return values;
+};
+
+const CsvTable = ({ samples, records }) => {
+  const columns = records && records.length && Object.keys(records[0]);
+  return (
+    <Table striped bordered hover style={{ fontSize: "0.8em" }}>
+      <thead>
+        <tr>
+          <th>Colonne</th>
+          <th>Type détecté</th>
+          <th>Anonymiser</th>
+          <th>Exemples</th>
+        </tr>
+      </thead>
+      <tbody>
+        {columns.map((key) => {
+          const columnType =
+            samples.length && samples.find((s) => s.name === key)?.type;
+          const values = getColumnSamplesValues({ records, key, columnType });
+          return (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{columnType || "-"}</td>
+              <td>
+                <input type="checkbox" checked={columnType !== "empty"} />
+              </td>
+              <td>{values}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
   );
 };
 
@@ -140,7 +183,7 @@ export default function CSV() {
         <Alert>
           <h1>CSV anonymiser</h1>
         </Alert>
-        <DropZone />
+        <CSVDropZone />
       </div>
     </Container>
   );
