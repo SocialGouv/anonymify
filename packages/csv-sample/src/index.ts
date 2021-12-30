@@ -1,5 +1,4 @@
 import * as csv from "csv";
-import fs from "fs";
 import pAll from "p-all";
 
 import { match } from "@socialgouv/match-french-entities";
@@ -27,25 +26,27 @@ const pickRandom = (arr: any[], maxCount: number) => {
 
 // get random rows from a csv
 const getRandomRows = (
-  readStream: fs.ReadStream,
+  readStream: Buffer,
   options: Record<string, any>
 ): Promise<Row[]> => {
   const parse = csv.parse(options);
-  const readStreamPipe = readStream.pipe(parse);
+  parse.write(readStream);
 
+  // const readStreamPipe = readStream.pipeThrough(parse);
+  //parse.write(readStream);
   const records: Row[] = [];
 
   return new Promise((resolve, reject) => {
-    readStreamPipe.on("error", (e) => {
+    parse.on("error", (e: Error) => {
       console.log(e);
       reject(e);
       throw e;
     });
-    readStreamPipe.on("end", () => {
+    parse.on("end", () => {
       const randomRecords = pickRandom(records, options.to);
       resolve(randomRecords);
     });
-    readStreamPipe.on("data", (row) => {
+    parse.on("data", (row: any) => {
       records.push(row);
     });
   });
@@ -91,8 +92,12 @@ type Sample = {
   values: string[];
 };
 
+interface onProgressFunction {
+  (progress: Progress): void;
+}
+
 // for given samples, detect the data type
-const guessColumnsTypes = (samples: Sample[], onProgress: Function) =>
+const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
   pAll(
     samples.map((sample: Sample) => async () => {
       if (sample.values.length === 0) {
@@ -106,7 +111,7 @@ const guessColumnsTypes = (samples: Sample[], onProgress: Function) =>
           type: "fixed",
         };
       } else if (sample.values.length > 1) {
-        onProgress(`detect column ${sample.name}`);
+        onProgress({ status: "detect", msg: `detect column ${sample.name}` });
         const detectedTypes = await pAll(
           sample.values.map(
             (value: string) => async () => (await match(value))[0]
@@ -128,7 +133,7 @@ const guessColumnsTypes = (samples: Sample[], onProgress: Function) =>
   );
 
 type SampleOptions = {
-  onProgress?: Function;
+  onProgress?: onProgressFunction;
   parse?: ParserOptions;
 };
 
@@ -138,17 +143,28 @@ type SampleResult = {
   values: string[];
 };
 
+type Progress = {
+  status: string;
+  msg?: string;
+  records?: any[];
+};
+
 export const sample = async (
-  readStream: fs.ReadStream,
+  readStream: Buffer,
   options: SampleOptions = {}
 ): Promise<SampleResult[]> => {
   const allOptions = {
-    onProgress: (str: string) => null,
+    onProgress: ({ status, msg }: Progress): void => {},
     parse: {},
     ...options,
   };
 
-  allOptions.onProgress("read random rows from CSV");
+  console.log("readStream", readStream);
+
+  allOptions.onProgress({
+    status: "running",
+    msg: "read random rows from CSV",
+  });
   const csvOptions = {
     delimiter: ";",
     ...options.parse,
@@ -156,15 +172,33 @@ export const sample = async (
     to: 50,
   };
 
-  allOptions.onProgress("extract random records");
+  allOptions.onProgress({
+    status: "running",
+    msg: "extract random records",
+  });
   const records = await getRandomRows(readStream, csvOptions);
 
-  allOptions.onProgress("sample CSV data");
+  allOptions.onProgress({
+    status: "samples",
+    msg: "extract random records",
+    records,
+  });
+
+  allOptions.onProgress({
+    status: "running",
+    msg: "sample CSV data",
+  });
   const samples = getColumnsSamples(records);
 
-  allOptions.onProgress("guess columns types");
+  allOptions.onProgress({
+    status: "running",
+    msg: "guess columns types",
+  });
   const columns = await guessColumnsTypes(samples, allOptions.onProgress);
-  allOptions.onProgress("finished");
+
+  allOptions.onProgress({
+    status: "finished",
+  });
 
   return columns;
 };

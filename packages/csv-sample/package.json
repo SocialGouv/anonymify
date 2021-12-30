@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@socialgouv/match-french-entities": "*",
-    "csv": "^6.0.4",
+    "csv": "^6.0.5",
     "p-all": "^4.0.0"
   },
   "devDependencies": {

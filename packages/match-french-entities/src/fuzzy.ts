@@ -1,4 +1,4 @@
-import fuzzball from "fuzzball";
+import * as fuzzball from "fuzzball";
 
 import noms from "../data/noms.json";
 import prenoms from "../data/prenoms.json";
