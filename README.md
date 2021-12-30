@@ -4,10 +4,16 @@ Outils TypeScript pour l'anonymisation des données en langue Française
 
 ## Packages
 
-| package                                                   | descriptions                       |
-| --------------------------------------------------------- | ---------------------------------- |
-| [match-french-entities](./packages/match-french-entities) | detection du type d'entité nommée  |
-| apps/demo-entities                                        | démo web de match-french-entit`ies |
+| package                                                   | description                                |
+| --------------------------------------------------------- | ------------------------------------------ |
+| [match-french-entities](./packages/match-french-entities) | detection du type d'entité nommée          |
+| [csv-sample](./packages/csv-sample)                       | detection des types de données dans un CSV |
+
+## Apps
+
+| app                | description                       |
+| ------------------ | --------------------------------- |
+| apps/demo-entities | démo web de match-french-entities |
 
 ### Build
 
