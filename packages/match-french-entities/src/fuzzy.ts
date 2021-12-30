@@ -1,10 +1,4 @@
-import {
-  process_and_sort,
-  full_process,
-  ratio,
-  extractAsPromised,
-  FuzzballBaseOptions,
-} from "fuzzball";
+import fuzzball from "fuzzball";
 
 import noms from "../data/noms.json";
 import prenoms from "../data/prenoms.json";
@@ -12,8 +6,8 @@ import villes from "../data/villes.json";
 
 const processCorpus = (corpus: CorpusData) => {
   for (const choice of corpus) {
-    choice.proc_sorted = process_and_sort(
-      full_process(choice.value, { force_ascii: true })
+    choice.proc_sorted = fuzzball.process_and_sort(
+      fuzzball.full_process(choice.value, { force_ascii: true })
     );
   }
   return corpus;
@@ -23,7 +17,7 @@ const customScorer = (
   query: string,
   choice: CorpusDataEntry,
   options: Record<string, string>
-) => ratio(query, choice.value, options);
+) => fuzzball.ratio(query, choice.value, options);
 
 const options = {
   scorer: customScorer,
@@ -32,7 +26,7 @@ const options = {
   useCollator: true,
   full_process: false,
   cutoff: 75, // suppress low results
-} as FuzzballBaseOptions;
+} as fuzzball.FuzzballBaseOptions;
 
 type Result = [string, ResultRow];
 
@@ -61,8 +55,8 @@ export const search = async (needle: string): Promise<FuzzySearchResults> => {
   const results = (await Promise.all(
     Object.keys(corpus).map(async (key) => [
       key,
-      await extractAsPromised(
-        full_process(needle, { force_ascii: true }),
+      await fuzzball.extractAsPromised(
+        fuzzball.full_process(needle, { force_ascii: true }),
         corpus[key],
         options
       ),

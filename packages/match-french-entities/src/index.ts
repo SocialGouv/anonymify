@@ -39,7 +39,6 @@ const cleanArr = (arr: string[]) => arr.map((v) => cleanStr(v));
 export const match = async (needle: string): Promise<SearchResults> => {
   if (!needle.trim().length) return [];
   const matches = Object.keys(config.matchers)
-    // .filter(key)
     .map((key) => {
       //@ts-expect-error
       const matcher = config.matchers[key] as Matcher;
@@ -57,8 +56,9 @@ export const match = async (needle: string): Promise<SearchResults> => {
     })
     .filter(Boolean);
 
+  // todo: regexps
   if (Number(needle.replace(/,/, "."))) {
-    if (needle.indexOf(".") > -1) {
+    if (needle.indexOf(".") > -1 || needle.indexOf(",") > -1) {
       matches.push({ type: "float", score: 100 });
     } else {
       matches.push({ type: "integer", score: 100 });
