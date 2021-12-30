@@ -11,9 +11,9 @@ Outils TypeScript pour l'anonymisation des données en langue Française
 
 ## Apps
 
-| app                | description                       |
-| ------------------ | --------------------------------- |
-| apps/demo-entities | démo web de match-french-entities |
+| app                        | description                       |
+| -------------------------- | --------------------------------- |
+| apps/match-french-entities | démo web de match-french-entities |
 
 ### Build
 
