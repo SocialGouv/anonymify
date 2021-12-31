@@ -2,11 +2,8 @@
   "name": "@socialgouv/csv-sample",
   "version": "1.0.0",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
-  "type": "module",
-  "sideEffects": false,
   "files": [
     "dist/**"
   ],
@@ -20,7 +17,7 @@
   "dependencies": {
     "@socialgouv/match-french-entities": "*",
     "csv": "^6.0.5",
-    "p-all": "^4.0.0"
+    "p-all": "^3.0.0"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",

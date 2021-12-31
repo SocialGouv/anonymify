@@ -2,5 +2,9 @@
   "extends": "@tsconfig/recommended",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
-  "compilerOptions": { "resolveJsonModule": true }
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
 }

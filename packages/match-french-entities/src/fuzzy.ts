@@ -1,5 +1,5 @@
-import * as fuzzball from "fuzzball";
-
+import fuzzball from "fuzzball";
+import pAll from "p-all";
 import noms from "../data/noms.json";
 import prenoms from "../data/prenoms.json";
 import villes from "../data/villes.json";
@@ -52,15 +52,21 @@ const corpus = {
 } as Record<string, CorpusData>;
 
 export const search = async (needle: string): Promise<FuzzySearchResults> => {
-  const results = (await Promise.all(
-    Object.keys(corpus).map(async (key) => [
-      key,
-      await fuzzball.extractAsPromised(
-        fuzzball.full_process(needle, { force_ascii: true }),
-        corpus[key],
-        options
-      ),
-    ])
+  const cleanNeedle = fuzzball.full_process(needle, { force_ascii: true });
+  const results = (await pAll(
+    Object.keys(corpus).map((key) => async () => {
+      console.time(needle + "." + key);
+      return [
+        key,
+        await fuzzball
+          .extractAsPromised(cleanNeedle, corpus[key], options)
+          .then((res) => {
+            console.timeEnd(needle + "." + key);
+            return res;
+          }),
+      ];
+    }),
+    { concurrency: 1 }
   )) as unknown as Results;
 
   return results

@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useDebounce } from "use-debounce";
 import { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button, Container, Alert, Table, Progress } from "react-bootstrap";
+import { Button, Container, Alert, Table } from "react-bootstrap";
 
 import { sample } from "@socialgouv/csv-sample";
 
@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const dropzoneStyle = {
   flex: 1,
+  margin: "20px 0",
   display: "flex",
   "flex-direction": "column",
   alignItems: "center",
@@ -81,7 +82,15 @@ const CSVDropZone = () => {
           console.log("samples", samples);
           setSamples(samples);
         })
-        .catch(console.log);
+        .catch((e) => {
+          console.error(e);
+          setProgress({
+            status: "error",
+            msg: `Impossible de lire le CSV : error`,
+          });
+          reset();
+          throw e;
+        });
     };
     reader.readAsArrayBuffer(firstCSV);
   }, []);
@@ -90,6 +99,13 @@ const CSVDropZone = () => {
     accept: "text/csv",
   });
 
+  const dropper = (
+    <div {...getRootProps()} style={dropzoneStyle}>
+      <input {...getInputProps()} />
+      {<p>Glissez un fichier CSV ici</p>}
+    </div>
+  );
+
   return (
     <div>
       {progress === null || progress.status === "error" ? (
@@ -97,13 +113,11 @@ const CSVDropZone = () => {
           {progress && progress.status === "error" && (
             <Alert variant="danger">{progress.msg || progress.status}</Alert>
           )}
-          <div {...getRootProps()} style={dropzoneStyle}>
-            <input {...getInputProps()} />
-            {<p>Glissez un fichier CSV ici</p>}
-          </div>
+          {dropper}
         </div>
       ) : (
         <div>
+          {progress && progress.status === "finished" && dropper}
           {progress && (
             <Alert
               variant={
@@ -115,6 +129,7 @@ const CSVDropZone = () => {
               {progress.msg || progress.status}
             </Alert>
           )}
+
           {(records && records.length && (
             <CsvTable records={records} samples={samples} />
           )) ||

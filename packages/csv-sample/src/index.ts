@@ -4,6 +4,8 @@ import pAll from "p-all";
 import { match } from "@socialgouv/match-french-entities";
 import { ParserOptions } from "prettier";
 
+const SAMPLE_SIZE = 3;
+
 type Row = Record<string, any>;
 
 const isValidValue = (val: string) =>
@@ -159,8 +161,6 @@ export const sample = async (
     ...options,
   };
 
-  console.log("readStream", readStream);
-
   allOptions.onProgress({
     status: "running",
     msg: "read random rows from CSV",
@@ -169,7 +169,7 @@ export const sample = async (
     delimiter: ";",
     ...options.parse,
     columns: true,
-    to: 50,
+    to: SAMPLE_SIZE,
   };
 
   allOptions.onProgress({

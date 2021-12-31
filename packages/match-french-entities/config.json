@@ -30,6 +30,9 @@
     "ip": {
       "regexps": ["^\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?\\.\\d\\d?\\d?"]
     },
+    "json": {
+      "regexps": ["^{\\\".*\\\"\\s*}"]
+    },
     "adresse": {
       "regexps": [
         "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|impasse|place|avenue|av.?|rue|boulevard|bd.?|chemin)\\s.*$"
@@ -40,6 +43,15 @@
         "^\\d\\d?/\\d\\d?/\\d\\d(\\d\\d)?$",
         "^\\d{4}[/-]\\d\\d?[/-]\\d\\d?$"
       ]
+    },
+    "url": {
+      "regexps": ["^https?://.*$"]
+    },
+    "float": {
+      "regexps": ["^\\d+[,.]\\d+$"]
+    },
+    "integer": {
+      "regexps": ["^\\d+$"]
     },
     "civilite": {
       "items": [

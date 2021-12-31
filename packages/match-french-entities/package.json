@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "type": "module",
-  "sideEffects": false,
   "files": [
     "dist/**"
   ],
@@ -19,7 +16,7 @@
   },
   "dependencies": {
     "fuzzball": "^2.1.2",
-    "p-all": "^4.0.0",
+    "p-all": "^3.0.0",
     "tsconfig": "^7.0.0"
   },
   "devDependencies": {
