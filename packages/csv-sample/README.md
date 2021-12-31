@@ -7,11 +7,12 @@ Les types de données sont détectés avec [@socialgouv/match-french-entities](h
 ## Usage
 
 ```js
+import fs from "fs";
 import { sample } from "@socialgouv/csv-sample";
 
-const readStream = fs.createReadStream(`./sample.csv`);
+const input = fs.createReadStream("./sample.csv");
 
-const samples = await sample(readStream, { onProgress: console.log });
+const samples = await sample(input, { onProgress: console.log });
 
 console.log(samples);
 ```

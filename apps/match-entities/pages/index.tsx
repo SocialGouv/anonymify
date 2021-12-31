@@ -1,4 +1,4 @@
-import { match } from "@socialgouv/match-french-entities";
+import { match } from "@socialgouv/match-entities";
 import { KeyboardEvent, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useEffect } from "react";
