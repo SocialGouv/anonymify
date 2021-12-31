@@ -4,7 +4,8 @@ import pAll from "p-all";
 import { match } from "@socialgouv/match-french-entities";
 import { ParserOptions } from "prettier";
 
-const SAMPLE_SIZE = 50;
+const READ_SIZE = 1000; // read first lines of CSV
+const SAMPLE_SIZE = 50; // random rows to pick
 
 type Row = Record<string, any>;
 
@@ -13,44 +14,79 @@ const isValidValue = (val: string) =>
 
 const uniq = (arr: any[]) => Array.from(new Set(arr));
 
-const pickRandom = (arr: any[], maxCount: number) => {
-  const picked = [];
-  const length = arr.length;
-  if (length <= maxCount) {
-    return arr;
+const getRandomItems = (arr: any[], n: number) => {
+  var result = new Array(n),
+    len = arr.length,
+    taken = new Array(len);
+  if (n > len) return arr;
+  while (n--) {
+    var x = Math.floor(Math.random() * len);
+    result[n] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
   }
-  while (picked.length < maxCount) {
-    const randomIndex = Math.round(Math.random() * length);
-    picked.push(arr[randomIndex]);
-  }
-  return picked;
+  return result;
 };
 
-// get random rows from a csv
-const getRandomRows = (
+// get single row from a csv
+const getRow = (
   readStream: Buffer,
-  options: Record<string, any>
+  options: Record<string, any>,
+  index: number
 ): Promise<Row[]> => {
   const parse = csv.parse(options);
-  parse.write(readStream);
-
-  // const readStreamPipe = readStream.pipeThrough(parse);
-  //parse.write(readStream);
-  const records: Row[] = [];
-
+  let lines = 0;
   return new Promise((resolve, reject) => {
     parse.on("error", (e: Error) => {
       console.log(e);
       reject(e);
       throw e;
     });
-    parse.on("end", () => {
-      const randomRecords = pickRandom(records, options.to);
+
+    parse.on("data", (row: any) => {
+      if (lines === index) {
+        resolve(row);
+        parse.end();
+      }
+      //records.push(row);
+      lines += 1;
+    });
+    parse.write(readStream);
+    parse.end();
+  });
+};
+
+// get random rows from a csv
+const getRandomRows = (
+  readStream: Buffer,
+  options: Record<string, any>,
+  sampleSize: number = SAMPLE_SIZE
+): Promise<Row[]> => {
+  const parse = csv.parse(options);
+
+  let lines = 0;
+  return new Promise((resolve, reject) => {
+    parse.on("error", (e: Error) => {
+      console.log(e);
+      reject(e);
+      throw e;
+    });
+    parse.on("end", async () => {
+      const randomIndexes = getRandomItems(
+        Array.from({ length: lines }, (_, v) => v),
+        sampleSize
+      );
+      const randomRecords = await pAll(
+        randomIndexes.map((index) => () => getRow(readStream, options, index)),
+        { concurrency: 1 }
+      );
       resolve(randomRecords);
     });
+
     parse.on("data", (row: any) => {
-      records.push(row);
+      lines += 1;
     });
+    parse.write(readStream);
+    parse.end();
   });
 };
 
@@ -170,11 +206,12 @@ export const sample = async (
     msg: "read random rows from CSV",
   });
   const csvOptions = {
+    columns: true,
+    relax_quotes: true,
     delimiter: ";",
+    to: READ_SIZE,
     //skip_records_with_error: true,
     ...options.parse,
-    columns: true,
-    to: SAMPLE_SIZE,
   };
 
   allOptions.onProgress({

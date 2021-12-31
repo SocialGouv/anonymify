@@ -1,6 +1,8 @@
 import { useState, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Container, Alert, Table } from "react-bootstrap";
+import GitHubForkRibbon from "react-github-fork-ribbon";
+import Head from "next/head";
 
 import { sample } from "@socialgouv/csv-sample";
 
@@ -197,6 +199,16 @@ const CsvTable = ({ samples, records }) => {
 export default function CSV() {
   return (
     <Container>
+      <Head>
+        <title>Anonymisation CSV</title>
+      </Head>
+      <GitHubForkRibbon
+        href="//github.com/socialgouv/anonymify"
+        target="_blank"
+        position="right"
+      >
+        Fork me on GitHub
+      </GitHubForkRibbon>
       <div
         style={{
           textAlign: "center",
