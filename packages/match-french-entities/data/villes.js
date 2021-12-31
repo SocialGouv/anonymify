@@ -37,9 +37,9 @@ const getRecords = () =>
           ];
         };
 
-        // only keep records with population > 1000
+        // only keep records with population > 500
         const relevantRecords = records
-          .filter((cells) => parseInt(cells[8]) > 1)
+          .filter((cells) => parseInt(cells[8]) > 0.6)
           .filter((cells) => !cells[2].match(/arrondissement/i));
 
         // add fake result to group by arrondissement;
@@ -47,27 +47,17 @@ const getRecords = () =>
         relevantRecords.push(groupResults("MARSEILLE"));
         relevantRecords.push(groupResults("LYON"));
 
-        const dedupeOptions = { cutoff: 85, scorer: fuzzball.ratio };
-        const duplicates = relevantRecords.map((cells) => cells[2]);
-
-        const uniques = fuzzball
-          .dedupe(duplicates, dedupeOptions)
-          .map(([a, b]) => a);
-
         const counts = relevantRecords
-          .filter((cells) => uniques.indexOf(cells[2]) > -1)
           .map((cells) => parseInt(cells[8]))
           .sort((a, b) => parseInt(a) - parseInt(b))
           .reverse();
 
         const maxCount = counts[0];
 
-        const recordsWithFrequency = relevantRecords
-          .filter((cells) => uniques.indexOf(cells[2]) > -1)
-          .map((cells) => ({
-            value: cells[2],
-            freq: parseInt(cells[8]) / maxCount,
-          }));
+        const recordsWithFrequency = relevantRecords.map((cells) => ({
+          value: cells[2],
+          freq: parseInt(cells[8]) / maxCount,
+        }));
 
         resolve(recordsWithFrequency);
       }

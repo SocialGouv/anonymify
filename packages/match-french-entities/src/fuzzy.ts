@@ -1,41 +1,8 @@
-import fuzzball from "fuzzball";
-import pAll from "p-all";
+import MiniSearch from "minisearch";
+
 import noms from "../data/noms.json";
 import prenoms from "../data/prenoms.json";
 import villes from "../data/villes.json";
-
-const processCorpus = (corpus: CorpusData) => {
-  for (const choice of corpus) {
-    choice.proc_sorted = fuzzball.process_and_sort(
-      fuzzball.full_process(choice.value, { force_ascii: true })
-    );
-  }
-  return corpus;
-};
-
-const customScorer = (
-  query: string,
-  choice: CorpusDataEntry,
-  options: Record<string, string>
-) => fuzzball.ratio(query, choice.value, options);
-
-const options = {
-  scorer: customScorer,
-  returnObjects: true,
-  limit: 1,
-  useCollator: true,
-  full_process: false,
-  cutoff: 75, // suppress low results
-} as fuzzball.FuzzballBaseOptions;
-
-type Result = [string, ResultRow];
-
-type ResultRow = [{ score: number; choice: CorpusDataEntry }];
-
-type Results = Result[];
-
-type CorpusDataEntry = { value: string; freq: number; proc_sorted?: any };
-type CorpusData = CorpusDataEntry[];
 
 type FuzzySearchResult = {
   type: string;
@@ -45,39 +12,44 @@ type FuzzySearchResult = {
 
 type FuzzySearchResults = FuzzySearchResult[];
 
-const corpus = {
-  nom: processCorpus(noms),
-  prenom: processCorpus(prenoms),
-  ville: processCorpus(villes),
-} as Record<string, CorpusData>;
+const rmAccents = (str: string) =>
+  str
+    .replace(/[éèêë]/g, "e")
+    .replace(/[àâë]/g, "a")
+    .replace(/[oêö]/g, "o");
+
+const miniSearch = new MiniSearch({
+  fields: ["value"],
+  storeFields: ["type", "freq"],
+  tokenize: (string, _fieldName) => {
+    return [string];
+  },
+  processTerm: (term, _fieldName) =>
+    rmAccents(term.replace(/[\s-]/g, "").toLowerCase()),
+  searchOptions: {
+    //boost: { title: 2 },
+    prefix: true,
+    fuzzy: 0.25,
+    //  processTerm: (term) => term.replace(/[\s-]/g, "").toLowerCase(),
+    tokenize: (string) => [string], //.split(/[\s-]+/), // search query tokenizer
+  },
+});
+
+// Index all documents
+miniSearch.addAll(prenoms.map((p, i) => ({ type: "prenom", id: i + 1, ...p })));
+miniSearch.addAll(noms.map((p, i) => ({ type: "nom", id: i + 1, ...p })));
+miniSearch.addAll(villes.map((p, i) => ({ type: "ville", id: i + 1, ...p })));
 
 export const search = async (needle: string): Promise<FuzzySearchResults> => {
-  const cleanNeedle = fuzzball.full_process(needle, { force_ascii: true });
-  const results = (await pAll(
-    Object.keys(corpus).map((key) => async () => {
-      console.time(needle + "." + key);
-      return [
-        key,
-        await fuzzball
-          .extractAsPromised(cleanNeedle, corpus[key], options)
-          .then((res) => {
-            console.timeEnd(needle + "." + key);
-            return res;
-          }),
-      ];
-    }),
-    { concurrency: 1 }
-  )) as unknown as Results;
+  const results = miniSearch.search(needle, {});
 
   return results
-    .filter((result) => result[1].length)
     .map((result) => ({
-      type: result[0],
-      initialScore: result[1][0].score,
+      type: result.type,
+      initialScore: result.score,
       score:
         // this formula depends on input data.
-        result[1][0].score *
-        Math.min(0.1, Math.max(0.005, result[1][0].choice.freq / 10)),
+        result.score * Math.min(0.1, Math.max(0.005, result.freq / 10)),
     }))
     .sort((res1: FuzzySearchResult, res2: FuzzySearchResult) => {
       return res2.score - res1.score;

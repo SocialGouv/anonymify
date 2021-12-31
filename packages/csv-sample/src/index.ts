@@ -4,7 +4,7 @@ import pAll from "p-all";
 import { match } from "@socialgouv/match-french-entities";
 import { ParserOptions } from "prettier";
 
-const SAMPLE_SIZE = 3;
+const SAMPLE_SIZE = 50;
 
 type Row = Record<string, any>;
 

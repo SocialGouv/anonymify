@@ -24,27 +24,17 @@ const getRecords = () =>
           ([_, count]) => parseInt(count) > 100
         );
 
-        const dedupeOptions = { cutoff: 85, scorer: fuzzball.ratio };
-        const duplicates = relevantRecords.map(([nom, count]) => nom);
-
-        const uniques = fuzzball
-          .dedupe(duplicates, dedupeOptions)
-          .map(([a, b]) => a);
-
         const counts = relevantRecords
-          .filter(([a, b]) => uniques.indexOf(a) > -1)
           .map(([_, count]) => parseInt(count))
           .sort((a, b) => parseInt(a) - parseInt(b))
           .reverse();
 
         const maxCount = counts[0];
 
-        const recordsWithFrequency = relevantRecords
-          .filter(([a, b]) => uniques.indexOf(a) > -1)
-          .map(([value, count]) => ({
-            value,
-            freq: parseInt(count) / maxCount,
-          }));
+        const recordsWithFrequency = relevantRecords.map(([value, count]) => ({
+          value,
+          freq: parseInt(count) / maxCount,
+        }));
 
         resolve(recordsWithFrequency);
       }

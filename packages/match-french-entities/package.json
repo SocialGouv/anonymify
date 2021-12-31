@@ -15,12 +15,16 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
+    "flexsearch": "^0.7.21",
     "fuzzball": "^2.1.2",
+    "minisearch": "^3.2.0",
     "p-all": "^3.0.0",
-    "tsconfig": "^7.0.0"
+    "tsconfig": "^7.0.0",
+    "wade": "^0.3.3"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
+    "@types/flexsearch": "^0.7.2",
     "@types/jest": "^27.0.3",
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
