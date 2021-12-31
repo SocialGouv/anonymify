@@ -98,6 +98,9 @@ interface onProgressFunction {
   (progress: Progress): void;
 }
 
+const wait = (args: any) =>
+  new Promise((resolve) => setTimeout(() => resolve(args), 1));
+
 // for given samples, detect the data type
 const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
   pAll(
@@ -114,12 +117,13 @@ const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
         };
       } else if (sample.values.length > 1) {
         onProgress({ status: "detect", msg: `detect column ${sample.name}` });
-        const detectedTypes = await pAll(
+        const detectedTypes = (await pAll(
           sample.values.map(
-            (value: string) => async () => (await match(value))[0]
+            (value: string) => async () =>
+              Promise.resolve((await match(value))[0]).then(wait)
           ),
           { concurrency: 1 }
-        );
+        )) as Row[];
         const detectedType = topKey(detectedTypes, "type");
         return {
           ...sample,
@@ -167,6 +171,7 @@ export const sample = async (
   });
   const csvOptions = {
     delimiter: ";",
+    //skip_records_with_error: true,
     ...options.parse,
     columns: true,
     to: SAMPLE_SIZE,

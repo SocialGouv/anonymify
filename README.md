@@ -14,6 +14,7 @@ Outils TypeScript pour l'anonymisation des données en langue Française
 | app                        | description                       |
 | -------------------------- | --------------------------------- |
 | apps/match-french-entities | démo web de match-french-entities |
+| apps/csv                   | web app d'anonymisation de CSV    |
 
 ### Build
 

@@ -1,29 +1,11 @@
-import { useState, useCallback } from "react";
-import { useDebounce } from "use-debounce";
-import { useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button, Container, Alert, Table } from "react-bootstrap";
 
 import { sample } from "@socialgouv/csv-sample";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const dropzoneStyle = {
-  flex: 1,
-  margin: "20px 0",
-  display: "flex",
-  "flex-direction": "column",
-  alignItems: "center",
-  padding: 50,
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: "#eeeeee",
-  borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-};
+import styles from "./custom.module.css";
 
 const uniq = (arr: any[]) => Array.from(new Set(arr));
 
@@ -48,59 +30,83 @@ const CSVDropZone = () => {
       status: "running",
       msg: "Démarrage...",
     });
-
-    const firstCSV = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.onabort = () => {
-      console.error("file reading was aborted");
-      setProgress({
-        status: "error",
-        msg: "Impossible de lire le CSV : aborted",
-      });
-      reset();
-    };
-    reader.onerror = (e) => {
-      console.error("file reading has failed", e);
-      setProgress({
-        status: "error",
-        msg: `Impossible de lire le CSV : error`,
-      });
-      reset();
-    };
-    reader.onload = async (e) => {
-      //@ts-expect-error
-      sample(Buffer.from(e.target.result), {
-        onProgress: ({ status, msg, records }) => {
-          console.log({ status, msg, records });
-          setProgress({ status, msg });
-          if (records) {
-            setRecords(records);
-          }
-        },
-      })
-        .then((samples) => {
-          console.log("samples", samples);
-          setSamples(samples);
-        })
-        .catch((e) => {
-          console.error(e);
-          setProgress({
-            status: "error",
-            msg: `Impossible de lire le CSV : error`,
-          });
-          reset();
-          throw e;
+    setTimeout(() => {
+      const firstCSV = acceptedFiles[0];
+      const reader = new FileReader();
+      reader.onabort = () => {
+        console.error("file reading was aborted");
+        setProgress({
+          status: "error",
+          msg: "Impossible de lire le CSV : aborted",
         });
-    };
-    reader.readAsArrayBuffer(firstCSV);
+        reset();
+      };
+      reader.onerror = (e) => {
+        console.error("file reading has failed", e);
+        setProgress({
+          status: "error",
+          msg: `Impossible de lire le CSV : error`,
+        });
+        reset();
+      };
+      reader.onload = async (e) => {
+        //@ts-expect-error
+        sample(Buffer.from(e.target.result), {
+          onProgress: ({ status, msg, records }) => {
+            console.log({ status, msg, records });
+            setProgress({ status, msg });
+            if (records) {
+              setRecords(records);
+            }
+          },
+        })
+          .then((samples) => {
+            console.log("samples", samples);
+            setSamples(samples);
+          })
+          .catch((e) => {
+            console.error(e);
+            setProgress({
+              status: "error",
+              msg: `Impossible de lire le CSV : error`,
+            });
+            reset();
+            throw e;
+          });
+      };
+      reader.readAsArrayBuffer(firstCSV);
+    });
   }, []);
-  const { getRootProps, getInputProps } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
     onDrop,
     accept: "text/csv",
   });
 
+  const acceptStyle = {
+    borderColor: "#00e676",
+  };
+
+  const rejectStyle = {
+    borderColor: "#ff1744",
+  };
+
+  const style = useMemo(
+    () => ({
+      ...(isDragActive ? acceptStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isDragActive, isDragReject, isDragAccept]
+  );
+
   const dropper = (
-    <div {...getRootProps()} style={dropzoneStyle}>
+    <div {...getRootProps({ style })} className={styles.dropZone}>
       <input {...getInputProps()} />
       {<p>Glissez un fichier CSV ici</p>}
     </div>
@@ -174,7 +180,10 @@ const CsvTable = ({ samples, records }) => {
               <td>{key}</td>
               <td>{columnType || "-"}</td>
               <td>
-                <input type="checkbox" checked={columnType !== "empty"} />
+                <input
+                  type="checkbox"
+                  defaultChecked={columnType !== "empty"}
+                />
               </td>
               <td>{values}</td>
             </tr>
@@ -196,7 +205,8 @@ export default function CSV() {
         }}
       >
         <Alert>
-          <h1>CSV anonymiser</h1>
+          <h1>Anonymisation de CSV</h1>
+          <p>Anonymisez vos données sans les transmettre</p>
         </Alert>
         <CSVDropZone />
       </div>

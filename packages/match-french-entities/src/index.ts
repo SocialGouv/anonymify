@@ -66,7 +66,7 @@ export const match = async (needle: string): Promise<SearchResults> => {
     matches.push({ type: "text", score: 100 });
   }
 
-  if (!matches.length) {
+  if (!matches.length && needle.length > 3) {
     matches.push(...(await fuzzySearch(needle)));
   }
 
@@ -79,6 +79,7 @@ export const match = async (needle: string): Promise<SearchResults> => {
     const ngramResults = (
       await Promise.all(ngrams.map((ngram: string) => fuzzySearch(ngram)))
     )
+      .slice(0, 10)
       .flatMap((result: any) => result && result.length && result.slice(0, 2))
       .map((result: any) => result.type)
       .filter(Boolean);
