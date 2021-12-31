@@ -1,9 +1,9 @@
-# @socialgouv/match-french-entities
+# @socialgouv/match-entities
 
 Détecte le type de contenu dans la `string` envoyée à l'aide de jeux de données et d'heuristiques.
 
 ```js
-import { match } from "@socialgouv/match-french-entities";
+import { match } from "@socialgouv/match-entities";
 
 const result = await match("81 Rue du Charolais, 75012 Paris");
 

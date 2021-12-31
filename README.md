@@ -1,12 +1,12 @@
 # @socialgouv/anonymify
 
-Outils TypeScript pour l'anonymisation des données en langue Française
+Outils TypeScript pour l'anonymisation des données en langue Française, compatible NodeJS et browser.
 
 ## Packages
 
 | package                                                   | description                                |
 | --------------------------------------------------------- | ------------------------------------------ |
-| [match-french-entities](./packages/match-french-entities) | detection du type d'entité nommée          |
+| [match-french-entities](./packages/match-french-entities) | detection du type d'entité                 |
 | [csv-sample](./packages/csv-sample)                       | detection des types de données dans un CSV |
 
 ## Apps
@@ -31,6 +31,13 @@ To develop all apps and packages, run the following command:
 ```
 yarn run dev
 ```
+
+### The Secret Sauce
+
+- React.js
+- MiniSearch
+- turborepo
+- datagouv
 
 ### Todo
 

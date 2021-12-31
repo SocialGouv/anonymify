@@ -72,9 +72,9 @@ export const match = async (needle: string): Promise<SearchResults> => {
 
   if (!matches.length && needle.indexOf(" ") > -1) {
     // search nom + prenom
-    const ngrams = ngraminator(needle.split(" "), [1, 2, 3, 4]).map(
-      (item: string[]) => item.join(" ")
-    );
+    const ngrams = ngraminator(needle.split(" "), [1, 2, 3, 4])
+      .map((item: string[]) => item.join(" "))
+      .filter((s: string) => s.length > 3);
 
     const ngramResults = (
       await Promise.all(ngrams.map((ngram: string) => fuzzySearch(ngram)))

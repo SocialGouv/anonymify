@@ -35,7 +35,7 @@
     },
     "adresse": {
       "regexps": [
-        "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|impasse|place|avenue|av.?|rue|boulevard|bd.?|chemin)\\s.*$"
+        "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|chemin|route|impasse|place|avenue|av.?|rue|boulevard|bd.?)\\s.*$"
       ]
     },
     "date_fr": {

@@ -1,8 +1,7 @@
 import * as csv from "csv";
 import pAll from "p-all";
 
-import { match } from "@socialgouv/match-french-entities";
-import { ParserOptions } from "prettier";
+import { match } from "@socialgouv/match-entities";
 
 const READ_SIZE = 1000; // read first lines of CSV
 const SAMPLE_SIZE = 50; // random rows to pick
@@ -28,7 +27,7 @@ const getRandomItems = (arr: any[], n: number) => {
 };
 
 // get single row from a csv
-const getRow = (
+const getCsvRow = (
   readStream: Buffer,
   options: Record<string, any>,
   index: number
@@ -76,7 +75,9 @@ const getRandomRows = (
         sampleSize
       );
       const randomRecords = await pAll(
-        randomIndexes.map((index) => () => getRow(readStream, options, index)),
+        randomIndexes.map(
+          (index) => () => getCsvRow(readStream, options, index)
+        ),
         { concurrency: 1 }
       );
       resolve(randomRecords);
@@ -107,7 +108,7 @@ const topKey = (arr: Row[], key: string): string => {
     return arr[0][key];
   }
   const totals = Object.entries(
-    arr.reduce((a, rec) => {
+    arr.filter(Boolean).reduce((a, rec) => {
       if (!a[rec[key]]) {
         a[rec[key]] = 0;
       }
@@ -129,10 +130,6 @@ type Sample = {
   name: string;
   values: string[];
 };
-
-interface onProgressFunction {
-  (progress: Progress): void;
-}
 
 const wait = (args: any) =>
   new Promise((resolve) => setTimeout(() => resolve(args), 1));
@@ -176,7 +173,7 @@ const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
 
 type SampleOptions = {
   onProgress?: onProgressFunction;
-  parse?: ParserOptions;
+  parse?: Record<string, any>;
 };
 
 type SampleResult = {
@@ -190,6 +187,10 @@ type Progress = {
   msg?: string;
   records?: any[];
 };
+
+interface onProgressFunction {
+  (progress: Progress): void;
+}
 
 export const sample = async (
   readStream: Buffer,
