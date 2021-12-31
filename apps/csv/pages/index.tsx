@@ -11,10 +11,11 @@ import styles from "./custom.module.css";
 
 const uniq = (arr: any[]) => Array.from(new Set(arr));
 
-const ellipsify = (str: string, maxLength: 15) =>
-  str && str.length > maxLength
-    ? str.substring(0, maxLength) + "..."
-    : str || "";
+const ellipsify = (str: string, maxLength: number = 15) => {
+  if (!str) return "";
+  if (str.length > maxLength) return str.substring(0, maxLength) + "...";
+  return str;
+};
 
 const CSVDropZone = () => {
   const [progress, setProgress] = useState(null);
@@ -167,27 +168,47 @@ const CSVDropZone = () => {
   );
 };
 
+const styleTextEllipsis = {
+  textOverflow: "ellispis",
+  "white-space": "nowrap",
+  overflow: "hidden ",
+};
+
 const getColumnSamplesValues = ({ records, key, columnType }) => {
+  const maxLength = 30;
   const values =
     columnType === "empty"
       ? ""
       : columnType === "fixed"
       ? records[0][key]
-      : uniq(records.map((rec) => ellipsify(rec[key], 15)).filter((x) => !!x))
-          .slice(0, 3)
-          .join(", ");
-  return values;
+      : uniq(records)
+          .map((rec) => rec[key])
+          .filter((x) => !!x)
+          .slice(0, 10);
+  return (
+    <div title={values.join("\n\n")} style={styleTextEllipsis}>
+      {values
+        .slice(0, 3)
+        .map((value) => ellipsify(value, maxLength))
+        .join(", ")}
+    </div>
+  );
 };
 
 const CsvTable = ({ samples, records }) => {
   const columns = records && records.length && Object.keys(records[0]);
   return (
-    <Table striped bordered hover style={{ fontSize: "0.8em" }}>
+    <Table
+      striped
+      bordered
+      hover
+      style={{ textAlign: "left", fontSize: "0.8em" }}
+    >
       <thead>
         <tr>
           <th>Colonne</th>
           <th>Type détecté</th>
-          <th>Anonymiser</th>
+          <th style={{ textAlign: "center" }}>Anonymiser</th>
           <th>Exemples</th>
         </tr>
       </thead>
@@ -200,7 +221,7 @@ const CsvTable = ({ samples, records }) => {
             <tr key={key}>
               <td>{key}</td>
               <td>{columnType || "-"}</td>
-              <td>
+              <td style={{ textAlign: "center" }}>
                 <input
                   type="checkbox"
                   defaultChecked={columnType !== "empty"}
