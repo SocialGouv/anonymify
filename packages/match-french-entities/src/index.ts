@@ -80,7 +80,8 @@ export const match = async (needle: string): Promise<SearchResults> => {
       await Promise.all(ngrams.map((ngram: string) => fuzzySearch(ngram)))
     )
       .slice(0, 10)
-      .flatMap((result: any) => result && result.length && result.slice(0, 2))
+      .flatMap((result: any) => result && result.length && result.slice(0, 5))
+      .filter((result: any) => result.score > 0.2) // keep most relevant matches
       .map((result: any) => result.type)
       .filter(Boolean);
 

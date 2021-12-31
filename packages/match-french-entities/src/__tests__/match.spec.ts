@@ -1,6 +1,10 @@
 import { match } from "../index";
 
 const tests = [
+  {
+    input: "Etablissement public de santé",
+    expected: "text",
+  },
   { input: "Julien", expected: "nom" },
   { input: "Martin", expected: "nom" },
   { input: "Céline", expected: "prenom" },
