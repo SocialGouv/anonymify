@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button, Container, Alert, Table } from "react-bootstrap";
+import { ProgressBar, Container, Alert, Table } from "react-bootstrap";
 import GitHubForkRibbon from "react-github-fork-ribbon";
 import Head from "next/head";
 
@@ -18,12 +18,14 @@ const ellipsify = (str: string, maxLength: 15) =>
 
 const CSVDropZone = () => {
   const [progress, setProgress] = useState(null);
+  const [detectionProgress, setDetectionProgress] = useState(0);
   const [records, setRecords] = useState(null);
   const [samples, setSamples] = useState(null);
 
   const reset = () => {
     setRecords([]);
     setSamples([]);
+    setDetectionProgress(0);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -52,10 +54,18 @@ const CSVDropZone = () => {
         reset();
       };
       reader.onload = async (e) => {
+        let detectionLength;
+        let detectProgress = 0;
         //@ts-expect-error
         sample(Buffer.from(e.target.result), {
           onProgress: ({ status, msg, records }) => {
-            console.log({ status, msg, records });
+            if (status === "samples") {
+              detectionLength = Object.keys(records[0]).length;
+            }
+            if (detectionLength && status === "detect") {
+              detectProgress += 1;
+              setDetectionProgress(detectProgress / detectionLength);
+            }
             setProgress({ status, msg });
             if (records) {
               setRecords(records);
@@ -114,6 +124,14 @@ const CSVDropZone = () => {
     </div>
   );
 
+  const progressBar = (detectionProgress && (
+    <ProgressBar
+      now={detectionProgress * 100}
+      animated
+      label={`Analyse : ${Math.round(detectionProgress * 100)}%`}
+    />
+  )) || <div>Analyse en cours...</div>;
+
   return (
     <div>
       {progress === null || progress.status === "error" ? (
@@ -134,7 +152,8 @@ const CSVDropZone = () => {
                   : "warning"
               }
             >
-              {progress.msg || progress.status}
+              {(progress.status !== "finished" && progressBar) ||
+                "Analyse terminée"}
             </Alert>
           )}
 
