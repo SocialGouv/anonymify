@@ -22,10 +22,10 @@ const miniSearch = new MiniSearch({
   fields: ["value"],
   storeFields: ["type", "freq"],
   tokenize: (string, _fieldName) => {
-    return [string];
+    return [string]; //, ...string.split(/[\s-]/)];
   },
   processTerm: (term, _fieldName) =>
-    rmAccents(term.replace(/[\s-]/g, "").toLowerCase()),
+    rmAccents(term.replace(/[\s-]/g, " ").toLowerCase()),
   searchOptions: {
     //boost: { title: 2 },
     prefix: true,

@@ -10,7 +10,7 @@ const tests = [
   { input: "Larbi", expected: "nom" },
   { input: "Leila", expected: "prenom" },
   { input: "Gus", expected: "prenom" },
-  { input: "Henri de la tour", expected: "text" },
+  { input: "Henri de la tour", expected: "fullname" },
   { input: "de la verriere", expected: "ville" },
   { input: "Emmanuel", expected: "prenom" },
   { input: "Catherine", expected: "prenom" },
@@ -53,6 +53,9 @@ const tests = [
   { input: "un texte quelconque", expected: "text" },
   { input: "http://some.url", expected: "url" },
   { input: "https://some.url/x/y?a=42#some-hash", expected: "url" },
+  { input: "Julien Martin", expected: "fullname" },
+  { input: "Francois du pont", expected: "fullname" },
+  { input: "Francois le ber", expected: "fullname" },
   {
     input:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",

@@ -1,5 +1,7 @@
 import { search as fuzzySearch } from "./fuzzy";
 import { match as regexMatch } from "./regexps";
+//@ts-expect-error
+import ngraminator from "ngraminator";
 
 import config from "../config.json";
 
@@ -36,6 +38,11 @@ const cleanStr = (str: string) =>
 
 const cleanArr = (arr: string[]) => arr.map((v) => cleanStr(v));
 
+const removeStops = (arr: string[]): string[] => {
+  const stops = ["le", "de", "la", "du", "d"];
+  return arr.map((s) => s.toLowerCase()).filter((s) => stops.indexOf(s) === -1);
+};
+
 export const match = async (needle: string): Promise<SearchResults> => {
   if (!needle.trim().length) return [];
   const matches = Object.keys(config.matchers)
@@ -61,6 +68,27 @@ export const match = async (needle: string): Promise<SearchResults> => {
 
   if (!matches.length) {
     matches.push(...(await fuzzySearch(needle)));
+  }
+
+  if (!matches.length && needle.indexOf(" ") > -1) {
+    // search nom + prenom
+    const ngrams = ngraminator(needle.split(" "), [1, 2, 3, 4]).map(
+      (item: string[]) => item.join(" ")
+    );
+
+    const ngramResults = (
+      await Promise.all(ngrams.map((ngram: string) => fuzzySearch(ngram)))
+    )
+      .flatMap((result: any) => result && result.length && result.slice(0, 2))
+      .map((result: any) => result.type)
+      .filter(Boolean);
+
+    if (
+      ngramResults.indexOf("nom") > -1 &&
+      ngramResults.indexOf("prenom") > -1
+    ) {
+      matches.push({ type: "fullname", score: 100 });
+    }
   }
 
   if (!matches.length && !Number(needle)) {
