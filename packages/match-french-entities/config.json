@@ -38,11 +38,14 @@
         "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|impasse|place|avenue|av.?|rue|boulevard|bd.?|chemin)\\s.*$"
       ]
     },
+    "date_fr": {
+      "regexps": ["^\\d\\d?/\\d\\d?/\\d\\d(\\d\\d)?$"]
+    },
     "date": {
-      "regexps": [
-        "^\\d\\d?/\\d\\d?/\\d\\d(\\d\\d)?$",
-        "^\\d{4}[/-]\\d\\d?[/-]\\d\\d?$"
-      ]
+      "regexps": ["^\\d{4}[/-]\\d\\d?[/-]\\d\\d?$"]
+    },
+    "datetime": {
+      "regexps": ["^\\d{4}[/-]\\d\\d?[/-]\\d\\d?T[\\d:.+]+Z?$"]
     },
     "url": {
       "regexps": ["^https?://.*$"]
