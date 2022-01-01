@@ -1,10 +1,14 @@
 import { useState, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
-import { ProgressBar, Container, Alert, Table } from "react-bootstrap";
+import { Button, ProgressBar, Container, Alert, Table } from "react-bootstrap";
 import GitHubForkRibbon from "react-github-fork-ribbon";
 import Head from "next/head";
+import fileReaderStream from "filereader-stream";
+import { saveAs } from "file-saver";
+import concat from "concat-stream";
 
 import { sample } from "@socialgouv/csv-sample";
+import { anonymify } from "@socialgouv/csv-anonymify";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./custom.module.css";
@@ -22,11 +26,13 @@ const CSVDropZone = () => {
   const [detectionProgress, setDetectionProgress] = useState(0);
   const [records, setRecords] = useState(null);
   const [samples, setSamples] = useState(null);
+  const [file, setFile] = useState(null);
 
   const reset = () => {
     setRecords([]);
     setSamples([]);
     setDetectionProgress(0);
+    setFile(null);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -35,9 +41,11 @@ const CSVDropZone = () => {
       status: "running",
       msg: "Démarrage...",
     });
+    const reader = new FileReader();
+    //setReaderStream(reader);
     setTimeout(() => {
       const firstCSV = acceptedFiles[0];
-      const reader = new FileReader();
+      setFile(firstCSV);
       reader.onabort = () => {
         console.error("file reading was aborted");
         setProgress({
@@ -133,6 +141,22 @@ const CSVDropZone = () => {
     />
   )) || <div>Analyse en cours...</div>;
 
+  const onExport = async () => {
+    const stream = fileReaderStream(file);
+
+    const outStream = anonymify(stream, {
+      onProgress: console.log,
+      columns: [{ name: "nofinesset", type: "email" }],
+    });
+
+    outStream.pipe(
+      concat(function (contents) {
+        const url = URL.createObjectURL(new Blob(["\uFEFF" + contents]));
+        saveAs(url);
+      })
+    );
+  };
+
   return (
     <div>
       {progress === null || progress.status === "error" ? (
@@ -159,7 +183,22 @@ const CSVDropZone = () => {
           )}
 
           {(records && records.length && (
-            <CsvTable records={records} samples={samples} />
+            <div>
+              <CsvTable records={records} samples={samples} />
+              {progress && (
+                <Alert
+                  variant={progress.status === "finished" ? "success" : "info"}
+                >
+                  <Button
+                    disabled={progress.status !== "finished"}
+                    size="lg"
+                    onClick={onExport}
+                  >
+                    Anonymiser et télécharger
+                  </Button>{" "}
+                </Alert>
+              )}
+            </div>
           )) ||
             null}
         </div>
@@ -186,11 +225,12 @@ const getColumnSamplesValues = ({ records, key, columnType }) => {
           .filter((x) => !!x)
           .slice(0, 10);
   return (
-    <div title={values.join("\n\n")} style={styleTextEllipsis}>
-      {values
-        .slice(0, 3)
-        .map((value) => ellipsify(value, maxLength))
-        .join(", ")}
+    <div title={values && values.join("\n")} style={styleTextEllipsis}>
+      {values &&
+        values
+          .slice(0, 3)
+          .map((value) => ellipsify(value, maxLength))
+          .join(", ")}
     </div>
   );
 };

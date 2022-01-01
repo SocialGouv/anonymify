@@ -12,11 +12,7 @@ import { anonymify } from "@socialgouv/csv-anonymify";
 
 const options = {
   onProgress: console.log,
-  columns: {
-    nom: {
-      type: "fullname",
-    },
-  },
+  columns: [{ name: "nom", type: "fullname" }],
   delimiter: ",",
 };
 

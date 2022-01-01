@@ -1,14 +1,14 @@
 import * as csv from "csv";
 import fs from "fs";
 
-type ColumnOption = {
+type MyColumnOption = {
   name: string;
   type: string;
 };
 
-type AnonymifyOptions = csv.parser.Options & {
+type AnonymifyOptions = Omit<csv.parser.Options, "columns"> & {
   onProgress?: onProgressFunction;
-  fields?: ColumnOption[];
+  columns?: MyColumnOption[];
 };
 
 type Progress = {
@@ -32,8 +32,8 @@ export const anonymify = (
   });
 
   const transformer = csv.transform({ parallel: 1 }, (data) => {
-    if (options.fields && options.fields.length) {
-      const newValues = options.fields
+    if (options.columns && options.columns.length) {
+      const newValues = options.columns
         .map(({ name, type }) => {
           return {
             name,
@@ -64,15 +64,15 @@ export const anonymify = (
   return outStream;
 };
 
-const test = async () => {
-  const input = fs.createReadStream("./sample.csv");
+// const test = async () => {
+//   const input = fs.createReadStream("./sample.csv");
 
-  const anonymiser = anonymify(input, {
-    onProgress: console.log,
-    fields: [{ name: "civilite", type: "sexe" }],
-  });
+//   const anonymiser = anonymify(input, {
+//     onProgress: console.log,
+//     columns: [{ type: "sexe", name: "civilite" }],
+//   });
 
-  anonymiser.pipe(fs.createWriteStream("./sample2.csv"));
-};
+//   anonymiser.pipe(fs.createWriteStream("./sample2.csv"));
+// };
 
-test();
+// test();
