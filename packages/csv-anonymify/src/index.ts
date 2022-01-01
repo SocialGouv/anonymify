@@ -1,14 +1,15 @@
 import * as csv from "csv";
 import fs from "fs";
 
-type MyColumnOption = {
+export type AnonymiseColumnOption = {
   name: string;
   type: string;
 };
+export type AnonymiseColumnOptions = AnonymiseColumnOption[];
 
-type AnonymifyOptions = Omit<csv.parser.Options, "columns"> & {
+export type AnonymifyOptions = Omit<csv.parser.Options, "columns"> & {
   onProgress?: onProgressFunction;
-  columns?: MyColumnOption[];
+  columns?: AnonymiseColumnOptions;
 };
 
 type Progress = {
@@ -57,22 +58,6 @@ export const anonymify = (
   transformer.on("error", function (err) {
     console.error(err.message);
   });
-  transformer.on("finish", function () {
-    console.log("output", output.length);
-  });
 
   return outStream;
 };
-
-// const test = async () => {
-//   const input = fs.createReadStream("./sample.csv");
-
-//   const anonymiser = anonymify(input, {
-//     onProgress: console.log,
-//     columns: [{ type: "sexe", name: "civilite" }],
-//   });
-
-//   anonymiser.pipe(fs.createWriteStream("./sample2.csv"));
-// };
-
-// test();

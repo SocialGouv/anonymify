@@ -2,9 +2,11 @@
 
 Anonymise un CSV
 
-Les types de données sont détectés avec [@socialgouv/match-french-entities](https://github.com/socialgouv/match-french-entities).
+Les types de données sont détectés avec [@socialgouv/match-entities](https://github.com/socialgouv/anonymify).
 
 ## Usage
+
+### NodeJs
 
 ```js
 import fs from "fs";
@@ -25,3 +27,7 @@ const anonymiser = anonymify(input, {
 
 anonymiser.pipe(fs.createWriteStream("./anonymised.csv"));
 ```
+
+### Browser :
+
+See demo application in `/apps/csv` using `FileReader` streaming APIs
