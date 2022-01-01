@@ -185,15 +185,9 @@ const CSVDropZone = () => {
           {(records && records.length && (
             <div>
               <CsvTable records={records} samples={samples} />
-              {progress && (
-                <Alert
-                  variant={progress.status === "finished" ? "success" : "info"}
-                >
-                  <Button
-                    disabled={progress.status !== "finished"}
-                    size="lg"
-                    onClick={onExport}
-                  >
+              {progress && progress.status === "finished" && (
+                <Alert variant={"info"}>
+                  <Button size="lg" onClick={onExport}>
                     Anonymiser et télécharger
                   </Button>{" "}
                 </Alert>
@@ -209,7 +203,7 @@ const CSVDropZone = () => {
 
 const styleTextEllipsis = {
   textOverflow: "ellispis",
-  "white-space": "nowrap",
+  whiteSpace: "nowrap",
   overflow: "hidden ",
 };
 
@@ -225,6 +219,7 @@ const getColumnSamplesValues = ({ records, key, columnType }) => {
           .filter((x) => !!x)
           .slice(0, 10);
   return (
+    //@ts-expect-error
     <div title={values && values.join("\n")} style={styleTextEllipsis}>
       {values &&
         values
