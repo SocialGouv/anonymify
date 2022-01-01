@@ -26,6 +26,10 @@ const dataTypes = [
   "siret",
   "siren",
   "json",
+  "civilite",
+  "sexe",
+  "cp",
+  "ville",
 ];
 
 export const CsvPreviewTable = ({

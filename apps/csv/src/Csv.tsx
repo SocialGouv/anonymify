@@ -17,6 +17,7 @@ const anonymiseAndExport = async (
 ) => {
   return new Promise((resolve) => {
     const stream = fileReaderStream(filereader);
+    stream.read(0);
 
     const outStream = anonymify(stream, {
       onProgress: console.log,

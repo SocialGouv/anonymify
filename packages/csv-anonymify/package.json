@@ -17,10 +17,12 @@
   "dependencies": {
     "@socialgouv/match-entities": "*",
     "csv": "^6.0.5",
+    "faker": "^5.5.3",
     "p-all": "^3.0.0"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
+    "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.3",
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
