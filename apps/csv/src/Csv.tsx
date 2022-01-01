@@ -1,6 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
-import { useDropzone } from "react-dropzone";
-import { Button, ProgressBar, Container, Alert, Table } from "react-bootstrap";
+import { useState, useCallback } from "react";
+import { Button, ProgressBar, Alert } from "react-bootstrap";
 import fileReaderStream from "filereader-stream";
 import { saveAs } from "file-saver";
 import concat from "concat-stream";
@@ -8,25 +7,30 @@ import concat from "concat-stream";
 import { sample } from "@socialgouv/csv-sample";
 import { anonymify, AnonymiseColumnOptions } from "@socialgouv/csv-anonymify";
 
-import styles from "./csv.module.css";
-
 import { CsvPreviewTable } from "./CsvPreviewTable";
 import { CsvDropZone } from "./CsvDropZone";
+import { replaceItemInArray } from "./utils";
 
-const anonymiseAndExport = (filereader, columns: AnonymiseColumnOptions) => {
-  const stream = fileReaderStream(filereader);
+const anonymiseAndExport = async (
+  filereader,
+  columns: AnonymiseColumnOptions
+) => {
+  return new Promise((resolve) => {
+    const stream = fileReaderStream(filereader);
 
-  const outStream = anonymify(stream, {
-    onProgress: console.log,
-    columns,
+    const outStream = anonymify(stream, {
+      onProgress: console.log,
+      columns,
+    });
+
+    outStream.pipe(
+      concat(function (contents) {
+        const url = URL.createObjectURL(new Blob(["\uFEFF" + contents]));
+        saveAs(url, "anonymised.csv");
+        resolve(true);
+      })
+    );
   });
-
-  outStream.pipe(
-    concat(function (contents) {
-      const url = URL.createObjectURL(new Blob(["\uFEFF" + contents]));
-      saveAs(url);
-    })
-  );
 };
 
 export const Csv = () => {
@@ -35,12 +39,16 @@ export const Csv = () => {
   const [records, setRecords] = useState(null);
   const [samples, setSamples] = useState(null);
   const [filereader, setFileReader] = useState(null);
+  const [columnsOptions, setColumnsOptions] = useState(null);
+  const [exporting, setExporting] = useState(null);
 
   const reset = () => {
-    setRecords([]);
-    setSamples([]);
+    setRecords(null);
+    setSamples(null);
     setDetectionProgress(0);
     setFileReader(null);
+    setColumnsOptions(null);
+    setExporting(null);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -91,6 +99,13 @@ export const Csv = () => {
         })
           .then((samples) => {
             setSamples(samples);
+            setColumnsOptions(
+              samples.map((sample) => ({
+                name: sample.name,
+                type: sample.type,
+                anonymise: true,
+              }))
+            );
           })
           .catch((e) => {
             console.error(e);
@@ -115,8 +130,14 @@ export const Csv = () => {
   )) || <div>Analyse en cours...</div>;
 
   const onExport = async () => {
-    const columns = [{ name: "nofinesset", type: "email" }];
-    anonymiseAndExport(filereader, columns);
+    setExporting(true);
+    setTimeout(async () => {
+      await anonymiseAndExport(
+        filereader,
+        columnsOptions.filter((col) => col.anonymise === true)
+      );
+      setExporting(false);
+    });
   };
 
   if (progress === null || progress.status === "error") {
@@ -132,6 +153,19 @@ export const Csv = () => {
 
   const isFinished = progress.status === "finished";
 
+  const onColumnChange = (key, values = {}) => {
+    const columnOptionIndex = columnsOptions.findIndex((c) => c.name === key);
+    const newColumnOptions = replaceItemInArray(
+      columnsOptions,
+      columnOptionIndex,
+      {
+        ...columnsOptions[columnOptionIndex],
+        ...values,
+      }
+    );
+    setColumnsOptions(newColumnOptions);
+  };
+
   return (
     <div>
       {isFinished && <CsvDropZone onDrop={onDrop} />}
@@ -140,10 +174,14 @@ export const Csv = () => {
       </Alert>
       {(records && records.length && (
         <div>
-          <CsvPreviewTable records={records} samples={samples} />
+          <CsvPreviewTable
+            records={records}
+            samples={samples}
+            onColumnChange={onColumnChange}
+          />
           {isFinished && (
             <Alert variant={"info"}>
-              <Button size="lg" onClick={onExport}>
+              <Button size="lg" onClick={onExport} disabled={exporting}>
                 Anonymiser et télécharger
               </Button>{" "}
             </Alert>

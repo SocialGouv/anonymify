@@ -53,7 +53,7 @@ export const anonymify = (
   const outStream = readStream
     .pipe(parser)
     .pipe(transformer)
-    .pipe(csv.stringify({ delimiter: ";" }));
+    .pipe(csv.stringify({ delimiter: ";", header: true }));
 
   transformer.on("error", function (err) {
     console.error(err.message);

@@ -1,13 +1,38 @@
-import { Table } from "react-bootstrap";
+import { Table, Form } from "react-bootstrap";
 
 import { getColumnSampleValues } from "./utils";
 
 type CsvTableParams = {
   samples: ColumnSample[];
   records: Record<string, string>[];
+  onColumnChange: Function;
 };
 
-export const CsvPreviewTable = ({ samples, records }: CsvTableParams) => {
+const dataTypes = [
+  "nom",
+  "prenom",
+  "fullname",
+  "adresse",
+  "text",
+  "email",
+  "integer",
+  "float",
+  "geo",
+  "url",
+  "tel",
+  "date",
+  "date_fr",
+  "datetime",
+  "siret",
+  "siren",
+  "json",
+];
+
+export const CsvPreviewTable = ({
+  samples,
+  records,
+  onColumnChange,
+}: CsvTableParams) => {
   const columns = records && records.length && Object.keys(records[0]);
   return (
     <Table
@@ -19,7 +44,7 @@ export const CsvPreviewTable = ({ samples, records }: CsvTableParams) => {
       <thead>
         <tr>
           <th>Colonne</th>
-          <th>Type détecté</th>
+          <th>Type</th>
           <th style={{ textAlign: "center" }}>Anonymiser</th>
           <th>Exemples</th>
         </tr>
@@ -27,16 +52,33 @@ export const CsvPreviewTable = ({ samples, records }: CsvTableParams) => {
       <tbody>
         {columns.map((key) => {
           const columnType =
-            samples.length && samples.find((s) => s.name === key)?.type;
+            samples &&
+            samples.length &&
+            samples.find((s) => s.name === key)?.type;
           const values = getColumnSampleValues({ records, key, columnType });
           return (
             <tr key={key}>
               <td>{key}</td>
-              <td>{columnType || "-"}</td>
+              <td>
+                <Form.Select
+                  onChange={(e) =>
+                    onColumnChange(key, { type: e.currentTarget.value })
+                  }
+                >
+                  <option>--</option>
+                  {dataTypes.map((type) => (
+                    <option key={type} selected={columnType === type}>
+                      {type}
+                    </option>
+                  ))}
+                </Form.Select>
+              </td>
               <td style={{ textAlign: "center" }}>
-                <input
-                  type="checkbox"
+                <Form.Check
                   defaultChecked={columnType !== "empty"}
+                  onClick={(e) => {
+                    onColumnChange(key, { anonymise: e.currentTarget.checked });
+                  }}
                 />
               </td>
               <td>{values}</td>

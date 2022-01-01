@@ -20,6 +20,12 @@ const styleTextEllipsis = {
   overflow: "hidden",
 } as CSSProperties;
 
+export const replaceItemInArray = (arr: any[], index: number, item) => [
+  ...arr.slice(0, index),
+  item,
+  ...arr.slice(index + 1),
+];
+
 export const getColumnSampleValues = ({
   records,
   key,
