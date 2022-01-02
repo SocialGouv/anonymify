@@ -3,6 +3,8 @@ import { Button, ProgressBar, Alert } from "react-bootstrap";
 import fileReaderStream from "filereader-stream";
 import { saveAs } from "file-saver";
 import concat from "concat-stream";
+//import { SpinnerCircular } from "spinners-react";
+import Loader from "react-ts-loaders";
 
 import { sample } from "@socialgouv/csv-sample";
 import { anonymify, AnonymiseColumnOptions } from "@socialgouv/csv-anonymify";
@@ -16,6 +18,10 @@ const anonymiseAndExport = async (
   columns: AnonymiseColumnOptions
 ) => {
   return new Promise((resolve) => {
+    const outFileName = filereader.name.replace(
+      /^(.*)\.csv$/,
+      "$1-anonymify.csv"
+    );
     const stream = fileReaderStream(filereader);
     stream.read(0);
 
@@ -27,12 +33,18 @@ const anonymiseAndExport = async (
     outStream.pipe(
       concat(function (contents) {
         const url = URL.createObjectURL(new Blob(["\uFEFF" + contents]));
-        saveAs(url, "anonymised.csv");
+        saveAs(url, outFileName);
         resolve(true);
       })
     );
   });
 };
+
+const StatusPanel = ({ children, variant = "danger" }) => (
+  <Alert style={{ fontSize: "1.5em" }} variant={variant}>
+    {children}
+  </Alert>
+);
 
 export const Csv = () => {
   const [progress, setProgress] = useState(null);
@@ -127,32 +139,28 @@ export const Csv = () => {
       now={detectionProgress * 100}
       animated
       label={`Analyse : ${Math.round(detectionProgress * 100)}%`}
+      style={{ height: 50, fontSize: "inherit" }}
     />
   )) || <div>Analyse en cours...</div>;
 
   const onExport = async () => {
     setExporting(true);
+    setProgress({
+      status: "finished",
+      msg: `Anonymisation en cours ☕️`,
+    });
     setTimeout(async () => {
       await anonymiseAndExport(
         filereader,
         columnsOptions.filter((col) => col.anonymise === true)
       );
+      setProgress({
+        status: "finished",
+        msg: `Anonymisation terminée 🎉`,
+      });
       setExporting(false);
-    });
+    }, 50);
   };
-
-  if (progress === null || progress.status === "error") {
-    return (
-      <div>
-        {progress && progress.status === "error" && (
-          <Alert variant="danger">{progress.msg || progress.status}</Alert>
-        )}
-        <CsvDropZone onDrop={onDrop} />;
-      </div>
-    );
-  }
-
-  const isFinished = progress.status === "finished";
 
   const onColumnChange = (key, values = {}) => {
     const columnOptionIndex = columnsOptions.findIndex((c) => c.name === key);
@@ -167,12 +175,28 @@ export const Csv = () => {
     setColumnsOptions(newColumnOptions);
   };
 
+  const isFinished = progress && progress.status === "finished";
+  const isError = progress && progress.status === "error";
+
+  if (progress === null || isError) {
+    return (
+      <div>
+        {isError && (
+          <StatusPanel variant="danger">
+            {progress.msg || progress.status}
+          </StatusPanel>
+        )}
+        <CsvDropZone onDrop={onDrop} />
+      </div>
+    );
+  }
+
   return (
     <div>
       {isFinished && <CsvDropZone onDrop={onDrop} />}
-      <Alert variant={isFinished ? "success" : "warning"}>
-        {isFinished ? "Analyse terminée" : progressBar}
-      </Alert>
+      <StatusPanel variant={isFinished ? "success" : "warning"}>
+        {isFinished ? progress.msg || "Analyse terminée" : progressBar}
+      </StatusPanel>
       {(records && records.length && (
         <div>
           <CsvPreviewTable
@@ -181,11 +205,18 @@ export const Csv = () => {
             onColumnChange={onColumnChange}
           />
           {isFinished && (
-            <Alert variant={"info"}>
-              <Button size="lg" onClick={onExport} disabled={exporting}>
-                Anonymiser et télécharger
-              </Button>{" "}
-            </Alert>
+            <div>
+              {exporting && (
+                <div style={{ opacity: 0.5 }}>
+                  <Loader size={300} type="hourglass" color="var(--bs-info)" />
+                </div>
+              )}
+              <Alert variant={"info"}>
+                <Button size="lg" onClick={onExport} disabled={exporting}>
+                  Anonymiser et télécharger
+                </Button>
+              </Alert>
+            </div>
           )}
         </div>
       )) ||

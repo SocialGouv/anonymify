@@ -32,15 +32,16 @@ export const getColumnSampleValues = ({
   columnType,
 }: GetColumnSampleValuesParams) => {
   const maxLength = 30;
-  const values =
+  const values = uniq(
     columnType === "empty"
       ? []
       : columnType === "fixed"
       ? [records[0][key]]
-      : uniq(records)
+      : records
           .map((rec) => rec[key])
           .filter((x) => !!x)
-          .slice(0, 10);
+          .slice(0, 10)
+  );
   return (
     <div title={values && values.join("\n")} style={styleTextEllipsis}>
       {values &&
