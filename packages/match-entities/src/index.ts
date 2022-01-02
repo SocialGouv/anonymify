@@ -3,58 +3,37 @@ import { match as regexMatch } from "./regexps";
 //@ts-expect-error
 import ngraminator from "ngraminator";
 
-import config from "../config.json";
+import {
+  Entity,
+  AnonymifyConfig,
+  MatchSearchResults,
+  Matcher,
+} from "./index.d";
 
-type SearchResult = {
-  type: string;
-  score: number;
-};
+import untypedConfig from "../config.json";
 
-type SearchResults = SearchResult[];
+const config = <AnonymifyConfig>untypedConfig;
 
-type CorpusMatcher = {
-  url?: string;
-  items?: string[];
-};
+import { cleanArr, cleanStr } from "./utils";
 
-type RegexpsMatcher = {
-  regexps: string[];
-};
-
-type Matcher = CorpusMatcher | RegexpsMatcher;
-
-interface Config {
-  matchers: {
-    [key: string]: Matcher;
-  };
-}
-
-const cleanStr = (str: string) =>
-  str &&
-  str
-    .trim()
-    .toLowerCase()
-    .replace(/[^\w\d]/, "");
-
-const cleanArr = (arr: string[]) => arr.map((v) => cleanStr(v));
-
-const removeStops = (arr: string[]): string[] => {
-  const stops = ["le", "de", "la", "du", "d"];
-  return arr.map((s) => s.toLowerCase()).filter((s) => stops.indexOf(s) === -1);
-};
-
-export const match = async (needle: string): Promise<SearchResults> => {
+export const match = async (needle: string): Promise<MatchSearchResults> => {
   if (!needle.trim().length) return [];
+
+  // first use config matchers
   const matches = Object.keys(config.matchers)
+    .filter(
+      (key) =>
+        "regexps" in config.matchers[key as Entity] ||
+        "items" in config.matchers[key as Entity]
+    )
     .map((key) => {
-      //@ts-expect-error
-      const matcher = config.matchers[key] as Matcher;
+      const matcher = config.matchers[key as Entity] as Matcher;
       if ("regexps" in matcher && regexMatch(needle, matcher.regexps)) {
         return { type: key, score: 100 };
       } else if (
-        //@ts-expect-error
+        "items" in matcher &&
         matcher.items &&
-        //@ts-expect-error
+        matcher.items.length &&
         cleanArr(matcher.items).indexOf(cleanStr(needle)) > -1
       ) {
         return { type: key, score: 100 };
@@ -62,14 +41,17 @@ export const match = async (needle: string): Promise<SearchResults> => {
     })
     .filter(Boolean);
 
+  // exclude long text
   if (needle.length > 30) {
     matches.push({ type: "text", score: 100 });
   }
 
+  // try fuzzy search
   if (!matches.length && needle.length > 3) {
     matches.push(...(await fuzzySearch(needle)));
   }
 
+  // try fuzzy + tokenisation
   if (!matches.length && needle.indexOf(" ") > -1) {
     // search nom + prenom
     const ngrams = ngraminator(needle.split(" "), [1, 2, 3, 4])
@@ -86,16 +68,17 @@ export const match = async (needle: string): Promise<SearchResults> => {
       .filter(Boolean);
 
     if (
-      ngramResults.indexOf("nom") > -1 &&
-      ngramResults.indexOf("prenom") > -1
+      ngramResults.indexOf("firstname") > -1 &&
+      ngramResults.indexOf("lastname") > -1
     ) {
       matches.push({ type: "fullname", score: 100 });
     }
   }
 
+  // default to text
   if (!matches.length && !Number(needle)) {
     matches.push({ type: "text", score: 100 });
   }
 
-  return matches as SearchResults;
+  return matches as MatchSearchResults;
 };

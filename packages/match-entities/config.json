@@ -1,13 +1,13 @@
 {
   "matchers": {
-    "prenom": {
-      "corpus": "prenoms.json"
+    "firstname": {
+      "corpus": "prenoms"
     },
-    "nom": {
-      "corpus": "noms.json"
+    "lastname": {
+      "corpus": "noms"
     },
-    "ville": {
-      "corpus": "villes.json"
+    "city": {
+      "corpus": "villes"
     },
     "geo": {
       "regexps": ["^\\d\\d?\\.\\d+,\\d\\d?\\.\\d+$"]
@@ -15,7 +15,7 @@
     "email": {
       "regexps": ["^[^@/'\";]+@[^@]+\\.[^@]+$"]
     },
-    "cp": {
+    "postcode": {
       "regexps": ["^\\d{5}$", "^2a$", "^2b$"]
     },
     "siren": {
@@ -24,7 +24,7 @@
     "siret": {
       "regexps": ["^\\d{14}$"]
     },
-    "tel": {
+    "phone": {
       "regexps": ["^(\\+\\d+\\s?)?0?\\d[:/.\\s]?(\\d{2}[:/.\\s]?){4}$"]
     },
     "ip": {
@@ -33,7 +33,7 @@
     "json": {
       "regexps": ["^{\\\".*\\\"\\s*}"]
     },
-    "adresse": {
+    "address": {
       "regexps": [
         "^(\\d+\\s*(bis|ter)?[\\s,]+)?(rond[-\\s]point|chemin|route|impasse|place|avenue|av.?|rue|boulevard|bd.?)\\s.*$"
       ]
@@ -56,7 +56,7 @@
     "integer": {
       "regexps": ["^\\d+$"]
     },
-    "civilite": {
+    "title": {
       "items": [
         "M",
         "M.",
@@ -70,7 +70,7 @@
         "Mlle."
       ]
     },
-    "sexe": {
+    "sex": {
       "items": ["Homme", "H", "Femme", "F"]
     }
   }

@@ -1,10 +1,8 @@
 {
-  "extends": "@tsconfig/recommended",
-  "include": ["."],
+  "extends": "tsconfig/base",
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   }
 }
