@@ -13,10 +13,13 @@ type SampleOptions = {
   parse?: Record<string, any>;
 };
 
+type MetadataRecord = Record<string, any>;
+
 type SampleResult = {
   name: string;
   type: string;
   values: string[];
+  metadata?: MetadataRecord;
 };
 
 type Progress = {
@@ -192,6 +195,34 @@ const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
     { concurrency: 1 }
   );
 
+const median = (arr: number[]) => {
+  const mid = Math.floor(arr.length / 2),
+    nums = [...arr].sort((a, b) => a - b);
+  return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+};
+
+const addColmunMetadata = (column: SampleResult) => {
+  const metadata: MetadataRecord = {};
+  if (column.type === "text") {
+    const lengths = column.values.map((s) => s.length);
+    metadata.minLength = Math.min(...lengths);
+    metadata.maxLength = Math.max(...lengths);
+    metadata.medianLength = median(lengths);
+  } else if (column.type === "integer") {
+    metadata.min = Math.min(...column.values.map((s) => parseFloat(s)));
+    metadata.max = Math.max(...column.values.map((s) => parseFloat(s)));
+    metadata.median = median(column.values.map((s) => parseFloat(s)));
+  } else if (column.type === "float") {
+    metadata.min = Math.min(...column.values.map((s) => parseFloat(s)));
+    metadata.max = Math.max(...column.values.map((s) => parseFloat(s)));
+    metadata.median = median(column.values.map((s) => parseFloat(s)));
+  }
+  return {
+    ...column,
+    metadata,
+  };
+};
+
 export const sample = async (
   readStream: Buffer,
   options: SampleOptions = {}
@@ -237,7 +268,9 @@ export const sample = async (
     status: "running",
     msg: "guess columns types",
   });
-  const columns = await guessColumnsTypes(samples, allOptions.onProgress);
+  const columns = (await guessColumnsTypes(samples, allOptions.onProgress)).map(
+    addColmunMetadata
+  );
 
   allOptions.onProgress({
     status: "finished",
