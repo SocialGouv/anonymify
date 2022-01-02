@@ -36,9 +36,11 @@ const miniSearch = new MiniSearch({
 });
 
 // Index all documents
-miniSearch.addAll(prenoms.map((p, i) => ({ type: "prenom", id: i + 1, ...p })));
-miniSearch.addAll(noms.map((p, i) => ({ type: "nom", id: i + 1, ...p })));
-miniSearch.addAll(villes.map((p, i) => ({ type: "ville", id: i + 1, ...p })));
+miniSearch.addAll(
+  prenoms.map((p, i) => ({ type: "firstname", id: i + 1, ...p }))
+);
+miniSearch.addAll(noms.map((p, i) => ({ type: "lastname", id: i + 1, ...p })));
+miniSearch.addAll(villes.map((p, i) => ({ type: "city", id: i + 1, ...p })));
 
 export const search = async (needle: string): Promise<FuzzySearchResults> => {
   const results = miniSearch.search(needle, {});

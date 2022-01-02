@@ -1,11 +1,11 @@
-export type MatchSearchResult = {
+type MatchSearchResult = {
   type: Entity;
   score: number;
 };
 
-export type MatchSearchResults = MatchSearchResult[];
+type MatchSearchResults = MatchSearchResult[];
 
-export type Entity =
+type Entity =
   | "address"
   | "city"
   | "date_fr"
@@ -38,16 +38,6 @@ type RegexpsMatcher = {
 
 type Matcher = CorpusMatcher | RegexpsMatcher;
 
-export interface AnonymifyConfig {
+interface AnonymifyConfig {
   matchers: Record<Entity, Matcher>;
 }
-
-// declare module "../config.json" {
-//   //const value: Config;
-//   export default Config;
-// }
-
-// declare module "*.json" {
-//   const value: any;
-//   export default value;
-// }

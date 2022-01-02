@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/base",
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "include": ["src/**/*.ts", "index.d.ts"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "resolveJsonModule": true

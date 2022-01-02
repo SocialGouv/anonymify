@@ -3,13 +3,6 @@ import { match as regexMatch } from "./regexps";
 //@ts-expect-error
 import ngraminator from "ngraminator";
 
-import {
-  Entity,
-  AnonymifyConfig,
-  MatchSearchResults,
-  Matcher,
-} from "./index.d";
-
 import untypedConfig from "../config.json";
 
 const config = <AnonymifyConfig>untypedConfig;

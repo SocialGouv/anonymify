@@ -8,6 +8,27 @@ const SAMPLE_SIZE = 50; // random rows to pick
 
 type Row = Record<string, any>;
 
+type SampleOptions = {
+  onProgress?: onProgressFunction;
+  parse?: Record<string, any>;
+};
+
+type SampleResult = {
+  name: string;
+  type: string;
+  values: string[];
+};
+
+type Progress = {
+  status: string;
+  msg?: string;
+  records?: any[];
+};
+
+interface onProgressFunction {
+  (progress: Progress): void;
+}
+
 const isValidValue = (val: string) =>
   val && val.replace(/[\s]/g, "").length > 0;
 
@@ -170,27 +191,6 @@ const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
     }),
     { concurrency: 1 }
   );
-
-type SampleOptions = {
-  onProgress?: onProgressFunction;
-  parse?: Record<string, any>;
-};
-
-type SampleResult = {
-  name: string;
-  type: string;
-  values: string[];
-};
-
-type Progress = {
-  status: string;
-  msg?: string;
-  records?: any[];
-};
-
-interface onProgressFunction {
-  (progress: Progress): void;
-}
 
 export const sample = async (
   readStream: Buffer,
