@@ -8,8 +8,8 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
+    "build": "tsup src/index.ts --format esm,cjs --dts --dts-resolve",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --dts-resolve",
     "lint": "TIMING=1 eslint src --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"

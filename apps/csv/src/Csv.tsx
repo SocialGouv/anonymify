@@ -111,11 +111,13 @@ export const Csv = () => {
           },
         })
           .then((samples) => {
+            console.log("samples", samples);
             setSamples(samples);
             setColumnsOptions(
               samples.map((sample) => ({
                 name: sample.name,
                 type: sample.type,
+                metadata: sample.metadata,
                 anonymise: true,
               }))
             );
@@ -149,6 +151,7 @@ export const Csv = () => {
       status: "finished",
       msg: `Anonymisation en cours ☕️`,
     });
+    console.log("columnsOptions", columnsOptions);
     setTimeout(async () => {
       await anonymiseAndExport(
         filereader,

@@ -1,11 +1,11 @@
-type MatchSearchResult = {
-  type: Entity;
+export type MatchSearchResult = {
+  type: MatchEntity;
   score: number;
 };
 
-type MatchSearchResults = MatchSearchResult[];
+export type MatchSearchResults = MatchSearchResult[];
 
-type Entity =
+export type MatchEntity =
   | "address"
   | "city"
   | "date_fr"
@@ -14,6 +14,7 @@ type Entity =
   | "email"
   | "firstname"
   | "float"
+  | "fullname"
   | "geo"
   | "integer"
   | "ip"
@@ -24,6 +25,7 @@ type Entity =
   | "sex"
   | "siren"
   | "siret"
+  | "text"
   | "title"
   | "url";
 
@@ -36,8 +38,8 @@ type RegexpsMatcher = {
   regexps: string[];
 };
 
-type Matcher = CorpusMatcher | RegexpsMatcher;
+export type Matcher = CorpusMatcher | RegexpsMatcher;
 
-interface AnonymifyConfig {
-  matchers: Record<Entity, Matcher>;
+export interface AnonymifyConfig {
+  matchers: Partial<Record<MatchEntity>, Matcher>;
 }

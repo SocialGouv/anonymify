@@ -1,3 +1,4 @@
+import { MatchEntity } from "@socialgouv/match-entities";
 import { Table, Form } from "react-bootstrap";
 
 import { getColumnSampleValues } from "./utils";
@@ -8,28 +9,28 @@ type CsvTableParams = {
   onColumnChange: Function;
 };
 
-const dataTypes = [
-  "nom",
-  "prenom",
+const dataTypes: MatchEntity[] = [
+  "lastname",
+  "firstname",
   "fullname",
-  "adresse",
+  "address",
   "text",
   "email",
   "integer",
   "float",
   "geo",
   "url",
-  "tel",
+  "phone",
   "date",
   "date_fr",
   "datetime",
   "siret",
   "siren",
   "json",
-  "civilite",
-  "sexe",
-  "cp",
-  "ville",
+  "title",
+  "sex",
+  "postcode",
+  "city",
 ];
 
 export const CsvPreviewTable = ({

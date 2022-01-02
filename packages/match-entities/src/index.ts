@@ -5,9 +5,21 @@ import ngraminator from "ngraminator";
 
 import untypedConfig from "../config.json";
 
+import { cleanArr, cleanStr } from "./utils";
+
+import { AnonymifyConfig, MatchSearchResults, MatchEntity } from "../index.d";
+
+export type {
+  AnonymifyConfig,
+  MatchSearchResults,
+  MatchEntity,
+} from "../index.d";
+
 const config = <AnonymifyConfig>untypedConfig;
 
-import { cleanArr, cleanStr } from "./utils";
+//export type AnonymifyConfig;
+//export  MatchSearchResults;
+//export  MatchEntit;
 
 export const match = async (needle: string): Promise<MatchSearchResults> => {
   if (!needle.trim().length) return [];
@@ -16,11 +28,11 @@ export const match = async (needle: string): Promise<MatchSearchResults> => {
   const matches = Object.keys(config.matchers)
     .filter(
       (key) =>
-        "regexps" in config.matchers[key as Entity] ||
-        "items" in config.matchers[key as Entity]
+        "regexps" in config.matchers[key as MatchEntity] ||
+        "items" in config.matchers[key as MatchEntity]
     )
     .map((key) => {
-      const matcher = config.matchers[key as Entity] as Matcher;
+      const matcher = config.matchers[key as MatchEntity];
       if ("regexps" in matcher && regexMatch(needle, matcher.regexps)) {
         return { type: key, score: 100 };
       } else if (

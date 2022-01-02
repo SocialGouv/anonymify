@@ -35,10 +35,11 @@ yarn run dev
 
 ### The Secret Sauce
 
-- React.js
-- MiniSearch
-- turborepo
-- datagouv
+- [React.js](https://reactjs.org/)
+- [MiniSearch](https://lucaong.github.io/minisearch/)
+- [faker.js](https://github.com/marak/Faker.js/)
+- [turborepo]https://turborepo.org/
+- [datagouv](https://data.gouv.fr)
 
 ### Todo
 

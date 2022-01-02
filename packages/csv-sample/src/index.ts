@@ -13,7 +13,7 @@ type SampleOptions = {
   parse?: Record<string, any>;
 };
 
-type MetadataRecord = Record<string, any>;
+export type MetadataRecord = Record<string, any>;
 
 type SampleResult = {
   name: string;
@@ -268,6 +268,7 @@ export const sample = async (
     status: "running",
     msg: "guess columns types",
   });
+
   const columns = (await guessColumnsTypes(samples, allOptions.onProgress)).map(
     addColmunMetadata
   );
