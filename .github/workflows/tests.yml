@@ -5,6 +5,10 @@ on:
     branches:
       - "*"
 
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   install:
     runs-on: ubuntu-latest
