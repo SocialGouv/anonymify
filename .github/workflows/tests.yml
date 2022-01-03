@@ -6,30 +6,34 @@ on:
       - "*"
 
 jobs:
-  test-match-entities:
+  install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
           yarn
-          yarn build
+          yarn build --no-cache
+  test-match-entities:
+    runs-on: ubuntu-latest
+    needs: [install]
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
           cd packages/match-entities
           yarn test
   csv-sample:
     runs-on: ubuntu-latest
+    needs: [install]
     steps:
       - uses: actions/checkout@v2
       - run: |
-          yarn
-          yarn build
           cd packages/csv-sample
           yarn test
   csv-anonymify:
     runs-on: ubuntu-latest
+    needs: [install]
     steps:
       - uses: actions/checkout@v2
       - run: |
-          yarn
-          yarn build
           cd packages/csv-anonymify
           yarn test
