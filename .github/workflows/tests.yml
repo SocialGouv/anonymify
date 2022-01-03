@@ -25,6 +25,7 @@ jobs:
           cd packages/csv-sample
           yarn test
   csv-anonymify:
+    runs-on: ubuntu-latest
     steps:
       - run: |
           cd packages/csv-anonymify
