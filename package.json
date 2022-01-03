@@ -7,26 +7,18 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "./build.sh",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "1.0.24"
   },
   "turbo": {
     "verbose": true,
     "pipeline": {
-      "build": {
-        "cache": false,
-        "dependsOn": [],
-        "outputs": [
-          "dist/**",
-          ".next/**"
-        ]
-      },
       "test": {
         "dependsOn": [
           "build"
