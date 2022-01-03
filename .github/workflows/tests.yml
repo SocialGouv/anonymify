@@ -13,22 +13,18 @@ jobs:
       - run: |
           yarn
   test-match-entities:
-    require: [install]
     runs-on: ubuntu-latest
     steps:
       - run: |
           cd packages/match-entities
           yarn test
   csv-sample:
-    require: [install]
     runs-on: ubuntu-latest
     steps:
       - run: |
           cd packages/csv-sample
           yarn test
   csv-anonymify:
-    require: [install]
-    runs-on: ubuntu-latest
     steps:
       - run: |
           cd packages/csv-anonymify
