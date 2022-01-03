@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@socialgouv/csv-sample": "*",
+    "@socialgouv/csv-anonymify": "*",
     "bootstrap": "^5.1.3",
     "concat-stream": "^2.0.0",
     "file-saver": "^2.0.5",

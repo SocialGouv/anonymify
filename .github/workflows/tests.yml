@@ -24,7 +24,7 @@ jobs:
       - name: install
         run: |
           yarn
-          yarn build --force
+          yarn build --force --no-cache
       - name: test
         run: |
           yarn turbo run test
