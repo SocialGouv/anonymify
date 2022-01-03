@@ -13,6 +13,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "lerna": "^4.0.0",
     "prettier": "^2.5.1",
     "turbo": "1.0.24"
   },
