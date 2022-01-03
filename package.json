@@ -20,6 +20,7 @@
     "verbose": true,
     "pipeline": {
       "build": {
+        "cache": false,
         "dependsOn": [],
         "outputs": [
           "dist/**",
@@ -31,9 +32,7 @@
           "build"
         ]
       },
-      "lint": {
-        "outputs": []
-      },
+      "lint": {},
       "dev": {
         "cache": false
       }
