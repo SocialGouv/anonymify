@@ -22,7 +22,7 @@ const input = fs.createReadStream("./sample.csv");
 
 const anonymiser = anonymify(input, {
   onProgress: console.log,
-  fields: [{ name: "civilite", type: "sexe" }],
+  fields: [{ name: "civilite", type: "sex" }],
 });
 
 anonymiser.pipe(fs.createWriteStream("./anonymised.csv"));
