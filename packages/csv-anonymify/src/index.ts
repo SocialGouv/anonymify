@@ -7,7 +7,7 @@ import { MatchEntity } from "@socialgouv/match-entities";
 export type AnonymiseColumnOption = {
   name: string;
   type: MatchEntity;
-  metadata: Record<string, any>;
+  metadata?: Record<string, any>;
 };
 export type AnonymiseColumnOptions = AnonymiseColumnOption[];
 

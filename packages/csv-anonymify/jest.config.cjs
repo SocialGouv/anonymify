@@ -1,7 +1,8 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   preset: "ts-jest/presets/default-esm",
-  testTimeout: 600000,
+  testTimeout: 60000,
+  verbose: true,
   globals: {
     "ts-jest": {
       useESM: true,
