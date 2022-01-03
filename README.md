@@ -44,4 +44,4 @@ yarn run dev
 ### Todo
 
 - detection delimiter
-- replace + export CSV
+- export CSV progress

@@ -7,6 +7,9 @@
   "files": [
     "dist/**"
   ],
+  "publishConfig": {
+    "acces": "public"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --dts-resolve",
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts --dts-resolve",

@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          yarn
+  test-match-entities:
+    require: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd packages/match-entities
+          yarn test
+  csv-sample:
+    require: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd packages/csv-sample
+          yarn test
+  csv-anonymify:
+    require: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cd packages/csv-anonymify
+          yarn test
