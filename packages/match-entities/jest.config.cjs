@@ -2,6 +2,7 @@
 module.exports = {
   preset: "ts-jest",
   testTimeout: 20000,
+  verbose: true,
   snapshotFormat: {
     printBasicPrototype: false,
   },
