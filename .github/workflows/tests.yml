@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
+          ls
+          ls node_modules/ts-jest
           cd packages/match-entities
           yarn test
   csv-sample:
