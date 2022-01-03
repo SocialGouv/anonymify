@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           yarn
+          yarn build
           cd packages/match-entities
           yarn test
   csv-sample:
@@ -20,6 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           yarn
+          yarn build
           cd packages/csv-sample
           yarn test
   csv-anonymify:
@@ -28,5 +30,6 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           yarn
+          yarn build
           cd packages/csv-anonymify
           yarn test
