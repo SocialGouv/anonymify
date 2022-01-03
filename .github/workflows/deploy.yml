@@ -13,19 +13,20 @@ jobs:
       - run: |
           yarn
   build:
-    require: [install]
+    needs: [install]
     runs-on: ubuntu-latest
     steps:
       - run: |
+          cd apps/csv
           yarn build
           yarn export
 
   publish:
-    require: [build]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.8
         with:
           branch: gh-pages
-          folder: packages/csv/out
+          folder: apps/csv/out
