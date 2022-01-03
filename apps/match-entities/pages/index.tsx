@@ -1,7 +1,6 @@
 import { match } from "@socialgouv/match-entities";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import { useEffect } from "react";
 
 export default function Web() {
   const [predictions, setPredictions] = useState(null);

@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "minisearch": "^3.2.0",
-    "ngraminator": "^2.0.6",
-    "tsconfig": "^7.0.0"
+    "ngraminator": "^2.0.6"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
