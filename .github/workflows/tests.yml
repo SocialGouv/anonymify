@@ -25,8 +25,12 @@ jobs:
         run: |
           yarn
           yarn build --force --no-cache
-      - name: test
+      - name: test packages/match-entities test
         run: |
           yarn --cwd packages/match-entities test
+      - name: test packages/csv-sample test
+        run: |
           yarn --cwd packages/csv-sample test
+      - name: test packages/csv-anonymify test
+        run: |
           yarn --cwd packages/csv-anonymify test
