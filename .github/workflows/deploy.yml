@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           yarn 
-          yarn build
+          yarn build --force
           cd apps/csv
           yarn export
           touch export/.nojekyll
