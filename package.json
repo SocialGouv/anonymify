@@ -40,7 +40,9 @@
       },
       "csv#build": {
         "dependsOn": [
-          "@socialgouv/match-entities#build"
+          "@socialgouv/match-entities#build",
+          "@socialgouv/csv-sample#build",
+          "@socialgouv/csv-anonymify#build"
         ]
       },
       "match-entities#build": {
