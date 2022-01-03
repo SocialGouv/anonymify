@@ -6,27 +6,27 @@ on:
       - "*"
 
 jobs:
-  install:
+  test-match-entities:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
-          yarn
-  test-match-entities:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
           cd packages/match-entities
+          yarn
           yarn test
   csv-sample:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: |
           cd packages/csv-sample
+          yarn
           yarn test
   csv-anonymify:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: |
           cd packages/csv-anonymify
+          yarn
           yarn test
