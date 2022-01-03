@@ -2,6 +2,7 @@
   "name": "csv",
   "version": "0.0.0",
   "private": true,
+  "homepage": "https://socialgouv.github.io/anonymify",
   "scripts": {
     "dev": "next dev --port 3002",
     "build": "next build",
