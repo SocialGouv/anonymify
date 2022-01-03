@@ -1,6 +1,10 @@
 # @socialgouv/anonymify
 
-Outils TypeScript pour l'anonymisation des données en langue Française, compatible Node.js et dans les browsers.
+Outils TypeScript pour l'anonymisation des données en langue Française.
+
+Compatible Node.js et dans les navigateurs
+
+Démo : https://socialgouv.github.io/anonymify
 
 ## Packages
 
