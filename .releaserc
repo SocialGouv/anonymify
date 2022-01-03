@@ -1,16 +1,26 @@
 branches:
   - main
-  - alpha
-  - beta
-  - next
+  - name: alpha
+    prerelease: true
+  - name: beta
+    prerelease: true
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/exec"
+    - prepareCmd: |
+        yarn lerna version ${nextRelease.version} \
+          --no-git-tag-version \
+          --yes
+      publishCmd: |
+        yarn lerna publish from-git --yes
   - "@semantic-release/changelog"
-  - "@semantic-release/npm"
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md
+        - lerna.json
         - package.json
+        - packages/*/CHANGELOG.md
+        - packages/*/package.json
       message: "chore(release): version ${nextRelease.version}\n\n${nextRelease.notes}"
   - "@semantic-release/github"

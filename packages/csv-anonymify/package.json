@@ -1,5 +1,6 @@
 {
   "name": "@socialgouv/csv-anonymify",
+  "decription": "Anonymize some CSV with faker.js data",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

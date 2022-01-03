@@ -1,5 +1,6 @@
 {
   "name": "@socialgouv/csv-sample",
+  "decription": "Guess CSV columns types and make some stats",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
