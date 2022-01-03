@@ -16,15 +16,12 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: |
           cd apps/csv
           yarn build
           yarn export
 
-  publish:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.8
         with:
