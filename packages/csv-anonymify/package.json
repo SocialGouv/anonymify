@@ -15,7 +15,7 @@
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "lint": "TIMING=1 eslint ./src --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "TEST=1 NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
     "@socialgouv/match-entities": "*",
