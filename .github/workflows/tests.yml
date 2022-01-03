@@ -27,4 +27,6 @@ jobs:
           yarn build --force --no-cache
       - name: test
         run: |
-          yarn turbo run test
+          yarn --cwd packages/match-entities test
+          yarn --cwd packages/csv-sample test
+          yarn --cwd packages/csv-anonymify test
