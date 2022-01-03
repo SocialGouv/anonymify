@@ -94,10 +94,12 @@ const getRandomRows = (
       throw e;
     });
     parse.on("end", async () => {
-      const randomIndexes = getRandomItems(
-        Array.from({ length: lines }, (_, v) => v),
-        sampleSize
-      );
+      const randomIndexes = process.env.TEST
+        ? Array.from({ length: sampleSize }, (_, v) => v)
+        : getRandomItems(
+            Array.from({ length: lines }, (_, v) => v),
+            sampleSize
+          );
       const randomRecords = await pAll(
         randomIndexes.map(
           (index) => () => getCsvRow(readStream, options, index)
