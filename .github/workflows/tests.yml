@@ -11,22 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          cd packages/match-entities
           yarn
+          cd packages/match-entities
           yarn test
   csv-sample:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
-          cd packages/csv-sample
           yarn
+          cd packages/csv-sample
           yarn test
   csv-anonymify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: |
-          cd packages/csv-anonymify
           yarn
+          cd packages/csv-anonymify
           yarn test
