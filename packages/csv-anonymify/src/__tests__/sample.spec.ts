@@ -1,7 +1,8 @@
-import { ColumnOption } from "csv-parse/.";
 import fs from "fs";
-
+import faker from "faker/locale/fr";
 import { anonymify, AnonymiseColumnOptions } from "../index";
+
+faker.seed(1234);
 
 test("should analyse sample.csv", async () => {
   const readStream = fs.createReadStream(`./sample.csv`);
