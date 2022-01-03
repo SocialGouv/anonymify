@@ -1,5 +1,6 @@
 {
   "name": "@socialgouv/match-entities",
+  "decription": "Return entity probability for a given text",
   "version": "1.0.0",
   "license": "Apache-2.0",
   "main": "./dist/index.js",

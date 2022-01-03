@@ -1,12 +1,12 @@
 branches:
   - main
-  - alpha
-  - beta
-  - next
+  - name: alpha
+    prerelease: true
+  - name: beta
+    prerelease: true
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
-  - "@semantic-release/changelog"
   - - "@semantic-release/exec"
     - prepareCmd: |
         yarn lerna version ${nextRelease.version} \
@@ -14,6 +14,7 @@ plugins:
           --yes
       publishCmd: |
         yarn lerna publish from-git --yes
+  - "@semantic-release/changelog"
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md
