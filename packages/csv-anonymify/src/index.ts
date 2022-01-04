@@ -1,8 +1,9 @@
 import * as csv from "csv";
 import fs from "fs";
-import faker from "faker/locale/fr";
 
-import { MatchEntity } from "@socialgouv/match-entities";
+import type { MatchEntity } from "@socialgouv/match-entities";
+
+import { transformers } from "./transformers";
 
 export type AnonymiseColumnOption = {
   name: string;
@@ -25,25 +26,6 @@ type Progress = {
 interface onProgressFunction {
   (progress: Progress): void;
 }
-
-// todo: handle config.items formats
-const transforms = {
-  fullname: (options: any) => faker.name.findName(options),
-  firstname: (options: any) => faker.name.firstName(options),
-  lastname: (options: any) => faker.name.lastName(options),
-  address: (options: any) => faker.address.streetAddress(options),
-  city: (options: any) => faker.address.city(options),
-  email: (options: any) => faker.internet.email(options),
-  url: (options: any) => faker.internet.url(),
-  ip: (options: any) => faker.internet.ip(),
-  phone: (options: any) => faker.phone.phoneNumber(options),
-  integer: (options: any) => "" + faker.datatype.number(options),
-  float: (options: any) => "" + faker.datatype.float(options),
-  geo: (options: any) =>
-    faker.fake("{{address.latitude}}, {{address.longitude}}"),
-  text: (options: any) => faker.lorem.words(options),
-  json: (options: any) => JSON.stringify({ hello: "world" }),
-} as Record<MatchEntity, any>;
 
 export const anonymify = (
   readStream: fs.ReadStream,
@@ -83,7 +65,8 @@ export const anonymify = (
               }
             }
           }
-          const value = (transforms[type] && transforms[type](options)) || "x";
+          const value =
+            (transformers[type] && transformers[type](options)) || "x";
           return {
             name,
             value,

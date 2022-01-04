@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should anonymise address 1`] = `"46846 Hincmar Saint-Honoré"`;
+
+exports[`should anonymise city 1`] = `"Clichy"`;
+
+exports[`should anonymise date 1`] = `"2019-09-22"`;
+
+exports[`should anonymise date_fr 1`] = `"11/07/2019"`;
+
+exports[`should anonymise datetime 1`] = `"2019-10-20T12:58:31.582Z"`;
+
+exports[`should anonymise email 1`] = `"Justin87@hotmail.fr"`;
+
+exports[`should anonymise firstname 1`] = `"Arnaude"`;
+
+exports[`should anonymise float 1`] = `"35781.37"`;
+
+exports[`should anonymise fullname 1`] = `"Mme Ella Da silva"`;
+
+exports[`should anonymise geo 1`] = `"38.2864,108.9503"`;
+
+exports[`should anonymise integer 1`] = `"37025"`;
+
+exports[`should anonymise ip 1`] = `"25.143.14.128"`;
+
+exports[`should anonymise json 1`] = `"{\\"random\\":\\"dignissimos\\"}"`;
+
+exports[`should anonymise lastname 1`] = `"Dubois"`;
+
+exports[`should anonymise phone 1`] = `"0172823768"`;
+
+exports[`should anonymise postcode 1`] = `"16482"`;
+
+exports[`should anonymise sex 1`] = `"Femme"`;
+
+exports[`should anonymise siren 1`] = `"431941605"`;
+
+exports[`should anonymise siret 1`] = `"20569904488511"`;
+
+exports[`should anonymise text 1`] = `"recusandae qui et"`;
+
+exports[`should anonymise title 1`] = `"M."`;
+
+exports[`should anonymise url 1`] = `"http://amandin.net"`;
