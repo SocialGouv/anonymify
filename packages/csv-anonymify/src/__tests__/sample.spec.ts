@@ -4,7 +4,9 @@ import { anonymify, AnonymiseColumnOptions } from "../index";
 
 faker.seed(1234);
 
-test("should analyse sample.csv", async () => {
+jest.useFakeTimers().setSystemTime(new Date("2020-01-01").getTime());
+
+test("should anonymyze sample.csv", async () => {
   const readStream = fs.createReadStream(`./sample.csv`);
 
   const columns = [
