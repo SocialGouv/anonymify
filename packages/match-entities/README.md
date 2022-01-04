@@ -12,6 +12,8 @@ console.log(result);
 // -> { type: "adresse", score: 100}
 ```
 
+Démo : https://4rotu.csb.app/
+
 ## Patterns
 
 Les patterns sont gérés dans le fichier [`config.json`](./config.json).
