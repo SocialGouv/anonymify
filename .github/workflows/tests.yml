@@ -27,8 +27,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: install
         run: |
-          yarn
-          yarn build --force --no-cache
+          yarn --frozen-lockfile
+          yarn build
       - name: test packages/match-entities test
         run: |
           yarn --cwd packages/match-entities test
