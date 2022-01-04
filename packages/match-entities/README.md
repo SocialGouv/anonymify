@@ -9,7 +9,7 @@ const result = await match("81 Rue du Charolais, 75012 Paris");
 
 console.log(result);
 
-// -> { type: "adresse", score: 100}
+// -> { type: "address", score: 100}
 ```
 
 Démo : https://4rotu.csb.app/
