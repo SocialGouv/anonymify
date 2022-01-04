@@ -9,7 +9,7 @@
     "dist/**"
   ],
   "publishConfig": {
-    "acces": "public"
+    "access": "public"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --dts-resolve",
