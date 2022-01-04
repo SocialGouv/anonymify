@@ -12,12 +12,6 @@ Les types de données sont détectés avec [@socialgouv/match-entities](https://
 import fs from "fs";
 import { anonymify } from "@socialgouv/csv-anonymify";
 
-const options = {
-  onProgress: console.log,
-  columns: [{ name: "nom", type: "fullname" }],
-  delimiter: ",",
-};
-
 const input = fs.createReadStream("./sample.csv");
 
 const anonymiser = anonymify(input, {
@@ -25,7 +19,7 @@ const anonymiser = anonymify(input, {
   fields: [{ name: "civilite", type: "sex" }],
 });
 
-anonymiser.pipe(fs.createWriteStream("./anonymised.csv"));
+anonymiser.pipe(fs.createWriteStream("./sample-anonymised.csv"));
 ```
 
 ### Browser :
