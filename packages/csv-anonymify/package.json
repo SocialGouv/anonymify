@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@socialgouv/match-entities": "*",
+    "@socialgouv/match-entities": "^1.0.1",
     "csv": "^6.0.5",
     "date-fns": "^2.28.0",
     "faker": "^5.5.3",

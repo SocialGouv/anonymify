@@ -19,7 +19,7 @@
     "test": "TEST=true jest"
   },
   "dependencies": {
-    "@socialgouv/match-entities": "*",
+    "@socialgouv/match-entities": "^1.0.1",
     "csv": "^6.0.5",
     "p-all": "^3.0.0"
   },
