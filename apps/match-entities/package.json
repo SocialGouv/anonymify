@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@socialgouv/match-entities": "*",
-    "next": "12.0.5",
+    "next": "12.0.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "use-debounce": "^7.0.1"
   },
   "devDependencies": {
-    "@types/react": "17.0.37",
+    "@types/react": "17.0.38",
     "config": "*",
     "eslint": "7.32.0",
     "next-transpile-modules": "9.0.0",
