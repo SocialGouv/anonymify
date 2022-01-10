@@ -7879,6 +7879,11 @@ stream-transform@^3.0.4:
   resolved "https://registry.yarnpkg.com/stream-transform/-/stream-transform-3.0.4.tgz#aae97911ea3adf2cd25976655ec3201fb714fda8"
   integrity sha512-g2jbk1hs3GiF3oHZLbR7Fph/PXh/3xHoz/D8aR2oHySE4xVUvNeTGqihhb1vxFjYyu4inqiTfT42g2MHBjjx0g==
 
+streamsaver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/streamsaver/-/streamsaver-2.0.5.tgz#3212f0e908fcece5b3a65591094475cf87850d00"
+  integrity sha512-KIWtBvi8A6FiFZGNSyuIZRZM6C8AvnWTiCx/TYa7so420vC5sQwcBKkdqInuGWoWMfeWy/P+/cRqMtWVf4RW9w==
+
 strict-uri-encode@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"

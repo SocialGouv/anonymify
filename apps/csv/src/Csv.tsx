@@ -1,9 +1,6 @@
 import { useState, useCallback } from "react";
 import { Button, ProgressBar, Alert } from "react-bootstrap";
 import fileReaderStream from "filereader-stream";
-import { saveAs } from "file-saver";
-import concat from "concat-stream";
-//import { SpinnerCircular } from "spinners-react";
 import Loader from "react-ts-loaders";
 
 import { sample } from "@socialgouv/csv-sample";
@@ -17,7 +14,7 @@ const anonymiseAndExport = async (
   filereader,
   columns: AnonymiseColumnOptions
 ) => {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve, reject) => {
     const outFileName = filereader.name.replace(
       /^(.*)\.csv$/,
       "$1-anonymify.csv"
@@ -30,13 +27,28 @@ const anonymiseAndExport = async (
       columns,
     });
 
-    outStream.pipe(
-      concat(function (contents) {
-        const url = URL.createObjectURL(new Blob(["\uFEFF" + contents]));
-        saveAs(url, outFileName);
-        resolve(true);
-      })
-    );
+    const streamSaver = await import("streamsaver");
+
+    const fileStream = streamSaver.createWriteStream(outFileName, {});
+
+    const defaultWriter = fileStream.getWriter();
+
+    outStream.on("readable", function () {
+      let row;
+      while ((row = outStream.read()) !== null) {
+        defaultWriter.write(Buffer.from(row));
+      }
+    });
+
+    outStream.on("end", (data) => {
+      defaultWriter.close();
+      resolve(true);
+    });
+
+    outStream.on("error", (data) => {
+      defaultWriter.close();
+      reject(true);
+    });
   });
 };
 
@@ -87,7 +99,7 @@ export const Csv = () => {
         console.error("file reading has failed", e);
         setProgress({
           status: "error",
-          msg: `Impossible de lire le CSV : error`,
+          msg: `Impossible de lire le CSV : ${e}`,
         });
         reset();
       };
@@ -95,6 +107,7 @@ export const Csv = () => {
         let detectionLength;
         let detectProgress = 0;
         //@ts-expect-error
+
         sample(Buffer.from(e.target.result), {
           onProgress: ({ status, msg, records }) => {
             if (status === "samples") {
@@ -126,7 +139,7 @@ export const Csv = () => {
             console.error(e);
             setProgress({
               status: "error",
-              msg: `Impossible de lire le CSV : error`,
+              msg: `Impossible de lire le CSV : ${e.message}`,
             });
             reset();
             throw e;
@@ -153,15 +166,23 @@ export const Csv = () => {
     });
     console.log("columnsOptions", columnsOptions);
     setTimeout(async () => {
-      await anonymiseAndExport(
-        filereader,
-        columnsOptions.filter((col) => col.anonymise === true)
-      );
-      setProgress({
-        status: "finished",
-        msg: `Anonymisation terminée 🎉`,
-      });
-      setExporting(false);
+      try {
+        await anonymiseAndExport(
+          filereader,
+          columnsOptions.filter((col) => col.anonymise === true)
+        );
+        setProgress({
+          status: "finished",
+          msg: `Anonymisation terminée 🎉`,
+        });
+        setExporting(false);
+      } catch (e) {
+        setProgress({
+          status: "error",
+          msg: `Impossible d'exporter : ${e.message}`,
+        });
+        setExporting(false);
+      }
     }, 50);
   };
 

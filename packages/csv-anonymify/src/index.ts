@@ -36,7 +36,7 @@ export const anonymify = (
     columns: true,
   });
 
-  const transformer = csv.transform({ parallel: 1 }, (data) => {
+  const transformer = csv.transform({ parallel: 10 }, (data) => {
     if (options.columns && options.columns.length) {
       const newValues = options.columns
         .map(({ name, type, metadata }) => {
