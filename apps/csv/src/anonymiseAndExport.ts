@@ -6,7 +6,7 @@ export const anonymiseAndExport = async (
   columns: AnonymiseColumnOptions
 ) => {
   // require is needed to allow the mitm override
-  const streamSaver = require("streamSaver");
+  const streamSaver = require("streamsaver");
   const webWorkerUrl = document.location.href + "/mitm.html";
   streamSaver.mitm = webWorkerUrl;
 
