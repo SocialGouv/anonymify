@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/SocialGouv/anonymify/compare/v1.0.4...v1.1.0) (2022-01-11)
+
+
+### Features
+
+* handle big files ([#9](https://github.com/SocialGouv/anonymify/issues/9)) ([c9d1de4](https://github.com/SocialGouv/anonymify/commit/c9d1de4ba8f0e76ad6ea1d21d3ecf734b5d6905e))
+
 ## [1.0.4](https://github.com/SocialGouv/anonymify/compare/v1.0.3...v1.0.4) (2022-01-04)
 
 
