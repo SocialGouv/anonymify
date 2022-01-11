@@ -1,56 +1,13 @@
 import { useState, useCallback } from "react";
 import { Button, ProgressBar, Alert } from "react-bootstrap";
-import fileReaderStream from "filereader-stream";
 import Loader from "react-ts-loaders";
 
 import { sample } from "@socialgouv/csv-sample";
-import { anonymify, AnonymiseColumnOptions } from "@socialgouv/csv-anonymify";
 
 import { CsvPreviewTable } from "./CsvPreviewTable";
 import { CsvDropZone } from "./CsvDropZone";
 import { replaceItemInArray } from "./utils";
-
-const anonymiseAndExport = async (
-  filereader,
-  columns: AnonymiseColumnOptions
-) => {
-  return new Promise(async (resolve, reject) => {
-    const outFileName = filereader.name.replace(
-      /^(.*)\.csv$/,
-      "$1-anonymify.csv"
-    );
-    const stream = fileReaderStream(filereader);
-    stream.read(0);
-
-    const outStream = anonymify(stream, {
-      onProgress: console.log,
-      columns,
-    });
-
-    const streamSaver = await import("streamsaver");
-
-    const fileStream = streamSaver.createWriteStream(outFileName, {});
-
-    const defaultWriter = fileStream.getWriter();
-
-    outStream.on("readable", function () {
-      let row;
-      while ((row = outStream.read()) !== null) {
-        defaultWriter.write(Buffer.from(row));
-      }
-    });
-
-    outStream.on("end", (data) => {
-      defaultWriter.close();
-      resolve(true);
-    });
-
-    outStream.on("error", (data) => {
-      defaultWriter.close();
-      reject(true);
-    });
-  });
-};
+import { anonymiseAndExport } from "./anonymiseAndExport";
 
 const StatusPanel = ({ children, variant = "danger" }) => (
   <Alert style={{ fontSize: "1.5em" }} variant={variant}>
@@ -179,7 +136,7 @@ export const Csv = () => {
       } catch (e) {
         setProgress({
           status: "error",
-          msg: `Impossible d'exporter : ${e.message}`,
+          msg: `🥲 Impossible d'exporter : ${e.message}`,
         });
         setExporting(false);
       }
