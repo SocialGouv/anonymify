@@ -1,7 +1,7 @@
 {
   "name": "@socialgouv/match-entities",
   "decription": "Return entity probability for a given text",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
-    "tsconfig": "^1.1.0",
+    "tsconfig": "^1.1.1",
     "tsup": "^5.11.9",
     "typescript": "^4.5.4"
   }
