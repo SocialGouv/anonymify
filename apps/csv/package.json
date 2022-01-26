@@ -22,7 +22,8 @@
     "react-dropzone": "^11.4.2",
     "react-github-fork-ribbon": "^0.6.0",
     "react-ts-loaders": "^1.2.1",
-    "streamsaver": "^2.0.5"
+    "streamsaver": "^2.0.5",
+    "web-streams-polyfill": "^3.2.0"
   },
   "devDependencies": {
     "@types/react": "17.0.38",

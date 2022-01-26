@@ -2,6 +2,7 @@ import faker from "faker/locale/fr";
 import { format } from "date-fns";
 
 import type { MatchEntity } from "@socialgouv/match-entities";
+import { randomCache } from "./randomCache";
 
 const leftPad = (s: string | number, length: number = 10) => {
   let padded = ("" + s).slice(0, length);
@@ -12,7 +13,7 @@ const leftPad = (s: string | number, length: number = 10) => {
 };
 
 // todo: handle config.items formats
-export const transformers = {
+export const _transformers = {
   address: (options: any) => faker.address.streetAddress(options),
   city: (options: any) => faker.address.city(options),
   date_fr: (options: any) => format(faker.date.past(), "MM/dd/yyyy"),
@@ -43,3 +44,12 @@ export const transformers = {
   title: (options: any) => faker.random.arrayElement(["M.", "Mme."]),
   url: (options: any) => faker.internet.url(),
 } as Record<MatchEntity, any>;
+
+export const transformers = Object.keys(_transformers).reduce(
+  (a, c) => ({
+    ...a,
+    // @ts-ignore-error
+    [c]: _transformers[c],
+  }),
+  {}
+) as Record<MatchEntity, any>;

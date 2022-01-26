@@ -16,10 +16,10 @@ Démo : https://socialgouv.github.io/anonymify
 
 ## Apps
 
-| app                 | description                    |
-| ------------------- | ------------------------------ |
-| apps/match-entities | démo web de match-entities     |
-| apps/csv            | web app d'anonymisation de CSV |
+| app                 | description                     |
+| ------------------- | ------------------------------- |
+| apps/match-entities | démo web de match-entities      |
+| apps/csv            | démo web d'anonymisation de CSV |
 
 ### Build
 
@@ -47,5 +47,4 @@ yarn run dev
 
 ### Todo
 
-- detection delimiter
 - export CSV progress
