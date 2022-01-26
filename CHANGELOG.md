@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/SocialGouv/anonymify/compare/v1.1.2...v1.1.3) (2022-01-26)
+
+
+### Bug Fixes
+
+* **ui:** dont show export before finish ([#13](https://github.com/SocialGouv/anonymify/issues/13)) ([a8d131e](https://github.com/SocialGouv/anonymify/commit/a8d131eba020e684eedff57e140430ad5f2e211b))
+
 ## [1.1.2](https://github.com/SocialGouv/anonymify/compare/v1.1.1...v1.1.2) (2022-01-26)
 
 
