@@ -215,7 +215,6 @@ export const Csv = () => {
         )}
         <CsvDropZone onDrop={onDrop} />
         {recordsView}
-        <ExportZone onExport={onExport} isExporting={exporting} />
       </div>
     );
   }
