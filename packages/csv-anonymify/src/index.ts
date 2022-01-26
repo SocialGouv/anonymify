@@ -4,6 +4,7 @@ import fs from "fs";
 import type { MatchEntity } from "@socialgouv/match-entities";
 
 import { transformers } from "./transformers";
+import { seedValue } from "faker";
 
 export type AnonymiseColumnOption = {
   name: string;
@@ -15,6 +16,7 @@ export type AnonymiseColumnOptions = AnonymiseColumnOption[];
 export type AnonymifyOptions = Omit<csv.parser.Options, "columns"> & {
   onProgress?: onProgressFunction;
   columns?: AnonymiseColumnOptions;
+  delimiter?: string;
 };
 
 type Progress = {
@@ -31,15 +33,18 @@ export const anonymify = (
   readStream: fs.ReadStream,
   options: AnonymifyOptions = {}
 ) => {
+  const delimiter = options.delimiter || ";";
   const parser = csv.parse({
-    delimiter: ";",
+    delimiter,
     columns: true,
+    relax_quotes: true,
+    skip_records_with_error: true,
   });
 
-  const transformer = csv.transform({ parallel: 10 }, (data) => {
+  const transformer = csv.transform({ parallel: 5 }, (data, callback) => {
     if (options.columns && options.columns.length) {
-      const newValues = options.columns
-        .map(({ name, type, metadata }) => {
+      const newRecord = options.columns.reduce(
+        (newRecord, { name, type, metadata }) => {
           let options: any = undefined;
           if (metadata) {
             if (type === "integer") {
@@ -67,16 +72,12 @@ export const anonymify = (
           }
           const value =
             (transformers[type] && transformers[type](options)) || "x";
-          return {
-            name,
-            value,
-          };
-        })
-        .reduce((a, c) => ({ ...a, [c.name]: c.value }), {});
-      return {
-        ...data,
-        ...newValues,
-      };
+
+          return Object.assign(newRecord, { [name]: value });
+        },
+        {}
+      );
+      callback(null, Object.assign({}, data, newRecord));
     }
     return data;
   });
@@ -84,7 +85,7 @@ export const anonymify = (
   const outStream = readStream
     .pipe(parser)
     .pipe(transformer)
-    .pipe(csv.stringify({ delimiter: ";", header: true }));
+    .pipe(csv.stringify({ delimiter, header: true }));
 
   transformer.on("error", function (err) {
     console.error(err.message);
