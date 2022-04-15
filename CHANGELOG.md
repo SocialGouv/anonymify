@@ -1,3 +1,11 @@
+## [1.1.5](https://github.com/SocialGouv/anonymify/compare/v1.1.4...v1.1.5) (2022-04-15)
+
+
+### Bug Fixes
+
+* **csv-sample:** prevent topKey exception ([#28](https://github.com/SocialGouv/anonymify/issues/28)) ([34e3dcc](https://github.com/SocialGouv/anonymify/commit/34e3dcc91aa19e9e5a0fdb1c845e1d88e029e307))
+* **deps:** update dependency next to v12.1.0 [security] ([#18](https://github.com/SocialGouv/anonymify/issues/18)) ([1786c6b](https://github.com/SocialGouv/anonymify/commit/1786c6b0a6ccfb7427f3cbea660b6be14297a233))
+
 ## [1.1.4](https://github.com/SocialGouv/anonymify/compare/v1.1.3...v1.1.4) (2022-01-29)
 
 
