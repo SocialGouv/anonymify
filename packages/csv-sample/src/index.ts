@@ -74,7 +74,7 @@ const guessColumnsTypes = (samples: Sample[], onProgress: onProgressFunction) =>
         const detectedType = topKey(detectedTypes, "type");
         return {
           ...sample,
-          type: detectedType,
+          type: detectedType || "unknown",
         };
       }
       return {
