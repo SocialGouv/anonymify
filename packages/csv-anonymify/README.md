@@ -2,7 +2,7 @@
 
 Anonymise un CSV
 
-Les types de données sont détectés avec [@socialgouv/match-entities](https://github.com/socialgouv/anonymify).
+Les types de données sont détectés avec [@socialgouv/match-entities](https://github.com/SocialGouv/anonymify/tree/main/packages/match-entities).
 
 ## Usage
 
