@@ -22,7 +22,7 @@ const getRandomItems = (arr: any[], n: number) => {
 };
 
 // extract the most present value for a given list of records and a given key
-export const topKey = (arr: Row[], key: string): string => {
+export const topKey = (arr: Row[], key: string): string | undefined => {
   if (arr.length === 1) {
     return arr[0][key];
   }
@@ -41,8 +41,9 @@ export const topKey = (arr: Row[], key: string): string => {
       return a[1] - b[1];
     })
     .reverse();
-
-  return totals[0][0];
+  if (totals.length && totals[0].length) {
+    return totals[0][0];
+  }
 };
 
 export const wait = (args: any) =>
