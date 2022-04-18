@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/SocialGouv/anonymify/compare/v1.1.5...v1.1.6) (2022-04-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency next to v12.1.5 ([#29](https://github.com/SocialGouv/anonymify/issues/29)) ([2d1418a](https://github.com/SocialGouv/anonymify/commit/2d1418ae408eeeb8119d833d59c4fc89169b9fef))
+
 ## [1.1.5](https://github.com/SocialGouv/anonymify/compare/v1.1.4...v1.1.5) (2022-04-15)
 
 
