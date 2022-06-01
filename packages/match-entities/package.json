@@ -19,7 +19,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "dependencies": {
-    "minisearch": "^3.2.0",
+    "minisearch": "^4.0.0",
     "ngraminator": "^2.0.6"
   },
   "devDependencies": {
