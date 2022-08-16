@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/SocialGouv/anonymify/compare/v1.1.6...v1.1.7) (2022-08-16)
+
+
+### Bug Fixes
+
+* fix parsing exception ([#45](https://github.com/SocialGouv/anonymify/issues/45)) ([cf7f6f3](https://github.com/SocialGouv/anonymify/commit/cf7f6f357653bd86474e293dd3d4a1cdcb2bb817))
+
 ## [1.1.6](https://github.com/SocialGouv/anonymify/compare/v1.1.5...v1.1.6) (2022-04-18)
 
 

@@ -1,7 +1,7 @@
 {
   "name": "@socialgouv/csv-sample",
   "decription": "Guess CSV columns types and make some stats",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
@@ -19,7 +19,7 @@
     "test": "TEST=true jest"
   },
   "dependencies": {
-    "@socialgouv/match-entities": "^1.1.6",
+    "@socialgouv/match-entities": "^1.1.7",
     "csv": "^6.0.5",
     "p-all": "^3.0.0"
   },
