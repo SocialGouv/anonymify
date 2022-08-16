@@ -65,7 +65,7 @@ export const getDelimiter = async (readStream: Buffer) => {
       // todo: make it better, this prevent using single-column CSVs
       delimiter = ",";
     }
-  } catch (e) {
+  } catch (e: any) {
     // row is not parsed correctly, fallback to `,`
     console.error("getCsvRow error", e.message);
     delimiter = ",";
