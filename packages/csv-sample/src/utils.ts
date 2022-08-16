@@ -58,10 +58,16 @@ export const median = (arr: number[]) => {
 // dummy delimiter detector
 export const getDelimiter = async (readStream: Buffer) => {
   let delimiter = ";";
-  const firstRow = await getCsvRow(readStream, { delimiter }, 0);
-  if (firstRow.length === 1) {
+  try {
+    const firstRow = await getCsvRow(readStream, { delimiter }, 0);
+    if (firstRow.length === 1) {
+      // row is not parsed correctly, fallback to `,`
+      // todo: make it better, this prevent using single-column CSVs
+      delimiter = ",";
+    }
+  } catch (e) {
     // row is not parsed correctly, fallback to `,`
-    // todo: make it better, this prevent using single-column CSVs
+    console.error("getCsvRow error", e.message);
     delimiter = ",";
   }
   return delimiter;
@@ -79,7 +85,7 @@ const getCsvRow = (
   let lines = 0;
   return new Promise((resolve, reject) => {
     parse.on("error", (e: Error) => {
-      console.log(e);
+      console.error("parse error", e.message);
       reject(e);
       throw e;
     });

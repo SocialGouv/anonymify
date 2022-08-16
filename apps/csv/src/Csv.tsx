@@ -101,7 +101,6 @@ export const Csv = () => {
             },
           })
             .then((samples) => {
-              console.log("samples", samples);
               setSamples(samples);
               setColumnsOptions(
                 samples.map((sample) => ({
