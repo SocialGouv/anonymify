@@ -31,11 +31,13 @@ yarn run build
 
 ### Develop
 
-To develop all apps and packages, run the following command:
+To develop all packages, run the following command:
 
 ```
 yarn run dev
 ```
+
+Also run the web demo separately : `cd apps/csv && yarn dev`
 
 ### The Secret Sauce
 
