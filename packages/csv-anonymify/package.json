@@ -1,7 +1,7 @@
 {
   "name": "@socialgouv/csv-anonymify",
   "decription": "Anonymize some CSV with faker.js data",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@socialgouv/match-entities": "^1.1.7",
+    "@socialgouv/match-entities": "^1.1.8",
     "csv": "^6.0.5",
     "date-fns": "^2.28.0",
     "faker": "^5.5.3",
