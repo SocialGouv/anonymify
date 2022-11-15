@@ -1,3 +1,10 @@
+## [1.1.13](https://github.com/SocialGouv/anonymify/compare/v1.1.12...v1.1.13) (2022-11-15)
+
+
+### Bug Fixes
+
+* lerna ([96c32cb](https://github.com/SocialGouv/anonymify/commit/96c32cb6f24601619ebe309060bc027cff11ecc0))
+
 ## [1.1.12](https://github.com/SocialGouv/anonymify/compare/v1.1.11...v1.1.12) (2022-11-15)
 
 
