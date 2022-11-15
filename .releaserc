@@ -13,10 +13,11 @@ plugins:
           --no-git-tag-version \
           --yes
       publishCmd: |
-        yarn lerna publish from-git --yes --verify-access
+        echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+        npm whoami
         cd packages/csv-anonymify && npm publish
-        cd ../packages/csv-sample && npm publish
-        cd ../packages/match-entities && npm publish
+        cd ../../packages/csv-sample && npm publish
+        cd ../../packages/match-entities && npm publish
   - "@semantic-release/changelog"
   - - "@semantic-release/git"
     - assets:
