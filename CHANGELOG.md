@@ -1,3 +1,10 @@
+## [1.1.15](https://github.com/SocialGouv/anonymify/compare/v1.1.14...v1.1.15) (2022-11-15)
+
+
+### Bug Fixes
+
+* add license ([d8f6004](https://github.com/SocialGouv/anonymify/commit/d8f60045500e6dececf33a5318ef6ebe066fb79f))
+
 ## [1.1.14](https://github.com/SocialGouv/anonymify/compare/v1.1.13...v1.1.14) (2022-11-15)
 
 
