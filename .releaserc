@@ -14,6 +14,9 @@ plugins:
           --yes
       publishCmd: |
         yarn lerna publish from-git --yes --verify-access
+        cd packages/csv-anonymify && npm publish
+        cd ../packages/csv-sample && npm publish
+        cd ../packages/match-entities && npm publish
   - "@semantic-release/changelog"
   - - "@semantic-release/git"
     - assets:
