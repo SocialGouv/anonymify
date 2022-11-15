@@ -1,3 +1,10 @@
+## [1.1.14](https://github.com/SocialGouv/anonymify/compare/v1.1.13...v1.1.14) (2022-11-15)
+
+
+### Bug Fixes
+
+* release ([d607cda](https://github.com/SocialGouv/anonymify/commit/d607cda6d2e7fe61998797e286f02f40258ced70))
+
 ## [1.1.13](https://github.com/SocialGouv/anonymify/compare/v1.1.12...v1.1.13) (2022-11-15)
 
 
