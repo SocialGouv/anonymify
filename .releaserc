@@ -13,7 +13,7 @@ plugins:
           --no-git-tag-version \
           --yes
       publishCmd: |
-        yarn lerna publish from-git --yes
+        yarn lerna publish from-git --yes --verify-access
   - "@semantic-release/changelog"
   - - "@semantic-release/git"
     - assets:
