@@ -31,6 +31,6 @@
     "ts-node": "^10.4.0",
     "tsconfig": "^1.1.18",
     "tsup": "^5.11.9",
-    "typescript": "^4.5.4"
+    "typescript": "^5.0.0"
   }
 }
