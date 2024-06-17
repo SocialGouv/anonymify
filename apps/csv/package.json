@@ -15,7 +15,7 @@
     "@socialgouv/csv-sample": "*",
     "bootstrap": "^5.1.3",
     "filereader-stream": "^2.0.0",
-    "next": "12.1.6",
+    "next": "13.5.0",
     "react": "17.0.2",
     "react-bootstrap": "^2.0.4",
     "react-dom": "17.0.2",
