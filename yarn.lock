@@ -4028,7 +4028,7 @@ __metadata:
     eslint: "npm:7.32.0"
     filereader-stream: "npm:^2.0.0"
     next: "npm:12.3.5"
-    next-transpile-modules: "npm:9.0.0"
+    next-transpile-modules: "npm:10.0.1"
     react: "npm:17.0.2"
     react-bootstrap: "npm:^2.0.4"
     react-dom: "npm:17.0.2"
@@ -4410,13 +4410,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.7.0":
-  version: 5.8.3
-  resolution: "enhanced-resolve@npm:5.8.3"
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.18.1
+  resolution: "enhanced-resolve@npm:5.18.1"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
-  checksum: 10c0/c50de36c067359833577fb031de6a3b3d0eeb0627cb81fea1e132116d0b5a4fc746e0c8525f683de0a656f25aad08d3da773775b27608db1695ac47ac64ff673
+  checksum: 10c0/4cffd9b125225184e2abed9fdf0ed3dbd2224c873b165d0838fd066cde32e0918626cba2f1f4bf6860762f13a7e2364fd89a82b99566be2873d813573ac71846
   languageName: node
   linkType: hard
 
@@ -7571,7 +7571,7 @@ __metadata:
     config: "npm:*"
     eslint: "npm:7.32.0"
     next: "npm:12.3.5"
-    next-transpile-modules: "npm:9.0.0"
+    next-transpile-modules: "npm:10.0.1"
     react: "npm:17.0.2"
     react-dom: "npm:17.0.2"
     tsconfig: "npm:*"
@@ -7943,13 +7943,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-transpile-modules@npm:9.0.0":
-  version: 9.0.0
-  resolution: "next-transpile-modules@npm:9.0.0"
+"next-transpile-modules@npm:10.0.1":
+  version: 10.0.1
+  resolution: "next-transpile-modules@npm:10.0.1"
   dependencies:
-    enhanced-resolve: "npm:^5.7.0"
-    escalade: "npm:^3.1.1"
-  checksum: 10c0/b1388ff9a1eeccbeba48084dcd002357bf748a2e3f886fd5edd6eb664b94f92ac7f4ad5473f9b7d600c50ad3caaa211e71e4f8b65818618a9ab3dfba436b110d
+    enhanced-resolve: "npm:^5.10.0"
+  checksum: 10c0/e047655170bc5bfdfad7d3694a28a49dc7e817c6616bbd0b9139a03a81f4bee34c96ecfdbc1cb626ea66a79b54322782ad316bf72d2a367fa424795e6ef7bcca
   languageName: node
   linkType: hard
 
