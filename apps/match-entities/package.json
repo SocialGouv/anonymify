@@ -26,6 +26,6 @@
   "resolutions": {
     "@next/swc-linux-arm64-musl": "12.13.4",
     "@next/swc-linux-arm64-gnu": "12.13.4",
-    "@next/swc-freebsd-x64": "12.13.4"
+    "@next/swc-freebsd-x64": "13.2.4"
   }
 }
