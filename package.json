@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "lerna": "^6.0.3",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.0",
     "turbo": "1.0.29"
   },
   "turbo": {
