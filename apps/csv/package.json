@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/react": "17.0.85",
     "config": "*",
-    "eslint": "7.32.0",
+    "eslint": "9.26.0",
     "next-transpile-modules": "9.0.0",
     "tsconfig": "*",
     "typescript": "^4.5.3"
