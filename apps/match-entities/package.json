@@ -19,7 +19,7 @@
     "@types/react": "17.0.85",
     "config": "*",
     "eslint": "7.32.0",
-    "next-transpile-modules": "9.0.0",
+    "next-transpile-modules": "10.0.1",
     "tsconfig": "*",
     "typescript": "^4.5.3"
   },
