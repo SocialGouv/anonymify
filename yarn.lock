@@ -4033,7 +4033,7 @@ __metadata:
     react-bootstrap: "npm:^2.0.4"
     react-dom: "npm:17.0.2"
     react-dropzone: "npm:^11.4.2"
-    react-github-fork-ribbon: "npm:^0.6.0"
+    react-github-fork-ribbon: "npm:^0.7.0"
     react-ts-loaders: "npm:^1.2.1"
     streamsaver: "npm:^2.0.5"
     tsconfig: "npm:*"
@@ -9186,12 +9186,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-github-fork-ribbon@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "react-github-fork-ribbon@npm:0.6.0"
+"react-github-fork-ribbon@npm:^0.7.0":
+  version: 0.7.1
+  resolution: "react-github-fork-ribbon@npm:0.7.1"
   peerDependencies:
-    react: ^0.14.0 || ^15.0.0 || ^16.0.0
-  checksum: 10c0/6fe61384ca37bdf61cc8595f785ff1e1f98240af589b030e402eaa855381a59096e456db2818dc165a4ad89e9c63f9f0e937263572c0cae429f16376aa2b32b7
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/cac7f7cde6eecad8dc3350cc51e1da19e73c58e190052832e763a6c7bba63a4c0810c95adf4adf73e4868c6c99680c252c7c2d11898247433555419d10a7893f
   languageName: node
   linkType: hard
 
